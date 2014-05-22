@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -18,20 +17,12 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 	private Graphics2D bufferedGraphics = null;
 	private int prevWidth = 400;
 	private int prevHeight = 400;
-	private ArrayList<ArrayList<PaintInfo>> layout = new ArrayList<ArrayList<PaintInfo>>();
-	private ArrayList<PaintInfo> CurrentLayout = null;
 	
 	public PaintCanvas(PaintInfo info) {
 		this.info = info;
-		layout.add(new ArrayList<PaintInfo>());
-		layout.add(new ArrayList<PaintInfo>());
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
-	}
-	
-	public void setLayoutList(ArrayList<PaintInfo> list) {
-		this.CurrentLayout = list;
 	}
 	
 	@Override
