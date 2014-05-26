@@ -1,7 +1,6 @@
 package paint;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -10,57 +9,50 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
-class ShapeObject extends JComponent {
-	protected Point anchorPoint;
-	protected Cursor draggingCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-	protected boolean overbearing = true;
+class ObjectiveShape extends JComponent {
 	private static final long serialVersionUID = 7209900239540363764L;
-	private PaintInfo info = null;
-	private int width, height;
+	protected Point anchorPoint;
+	protected boolean overbearing = true;
+	private PaintInfo drawInfo = null;
 	
-	public ShapeObject(PaintInfo info) {
-		this.info = info;
+	public ObjectiveShape(PaintInfo drawInfo) {
+		this.drawInfo = drawInfo;
 		this.addDragListeners();
 		this.setOpaque(false);
-		this.width = Math.abs(info.end.x - info.start.x);
-		this.height = Math.abs(info.end.y - info.start.y);
-		this.setSize(new Dimension(width + 1, height + 1));
+		this.setSize(Math.abs(drawInfo.end.x - drawInfo.start.x) + 1,
+				Math.abs(drawInfo.end.y - drawInfo.start.y) + 1);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		this.paintshape_s(g);
-	}
-	
-	void paintshape_s(Graphics g) {
-		g.setColor(info.color);
+
+		g.setColor(drawInfo.color);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(info.stroke);
+		g2.setStroke(drawInfo.stroke);
 		
-		switch(info.type) {
+		switch(drawInfo.type) {
 		case Rect:
-			if (info.fill) {
-				if (info.color != info.innerColor) g.setColor(info.innerColor);
-				g.fillRect(0, 0, getWidth() - 1, getHeight());
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
+				g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 			}
-			g.setColor(info.color);
-			g.drawRect(0, 0, width, height);
+			g.setColor(drawInfo.color);
+			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			break;
 			
 		case Oval:
-			if (info.fill) {
-				if (info.color != info.innerColor) g.setColor(info.innerColor);
-				g.fillOval(0, 0, getWidth() - 1, getHeight());
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
+				g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
 			}
-			g.setColor(info.color);
-			g.drawOval(0, 0, getWidth() - 1, getHeight());
+			g.setColor(drawInfo.color);
+			g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 			break;
 			
 		case Pen :
 		case Line :
-			g.drawLine(info.start.x, info.start.y, info.end.x, info.end.y);
+			g.drawLine(drawInfo.start.x, drawInfo.start.y, drawInfo.end.x, drawInfo.end.y);
 			break;
 			
 		default:
@@ -70,7 +62,7 @@ class ShapeObject extends JComponent {
 	}
 	
 	private void addDragListeners() {
-		final ShapeObject handle = this;
+		final ObjectiveShape handle = this;
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -94,8 +86,7 @@ class ShapeObject extends JComponent {
 				Point position = new Point(mouseOnScreen.x - parentOnScreen.x
 						- anchorX, mouseOnScreen.y - parentOnScreen.y - anchorY);
 				setLocation(position);
- 
-				// Change Z-Buffer if it is "overbearing"
+				
 				if (overbearing) {
 					getParent().setComponentZOrder(handle, 0);
 					repaint();

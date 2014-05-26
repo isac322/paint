@@ -16,14 +16,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-public class ColorPanel extends JPanel implements MouseListener, ActionListener {
+public class ColorSelectPanel extends JPanel implements MouseListener, ActionListener {
 	private static final long serialVersionUID = -5692867526799936540L;
-	private PaintInfo info = null;
+	private final PaintInfo info;
 	private Color [] arr = { Color.BLACK, Color.WHITE, Color.RED, Color.PINK, Color.ORANGE, Color.YELLOW, Color.GREEN
 			, Color.BLUE, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY, Color.CYAN, Color.MAGENTA, Color.WHITE };
-	private ColorBox customColor = null;
+	private IndividualColorBox customColor = null;
 	
-	public ColorPanel(PaintInfo info) {
+	public ColorSelectPanel(PaintInfo info) {
 		this.info = info;
 
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -34,14 +34,16 @@ public class ColorPanel extends JPanel implements MouseListener, ActionListener 
 		
 		this.add(Box.createHorizontalStrut(50));
 		this.add(colorBoxPanel);
+		
 		colorBoxPanel.add(upBox);
 		colorBoxPanel.add(Box.createVerticalStrut(5));
 		colorBoxPanel.add(underBox);
 		
 		for (int i = 0, len = arr.length; i < len; i++) {
-			ColorBox colorBox = new ColorBox(arr[i]);
+			IndividualColorBox colorBox = new IndividualColorBox(arr[i]);
 			if (i == len - 1) customColor = colorBox;
 			colorBox.addMouseListener(this);
+			
 			(i >= len / 2 ? upBox : underBox).add(Box.createHorizontalStrut(10));
 			(i >= len / 2 ? upBox : underBox).add(colorBox);
 		}
@@ -80,13 +82,17 @@ public class ColorPanel extends JPanel implements MouseListener, ActionListener 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int button = e.getButton();
-	
-		if (button == MouseEvent.BUTTON1) {
-			info.color = ((ColorBox)e.getSource()).getColor();
-		} else if (button == MouseEvent.BUTTON3) {
-			info.innerColor = ((ColorBox)e.getSource()).getColor();
+		Color selectedColor = ((IndividualColorBox)e.getSource()).getColor();
+		
+		switch (e.getButton()) {
+		case MouseEvent.BUTTON1:
+			info.color = selectedColor;
+			break;
+		case MouseEvent.BUTTON3:
+			info.innerColor = selectedColor;
+			break;
 		}
+		
 		this.repaint();
 	}
 
@@ -101,11 +107,11 @@ public class ColorPanel extends JPanel implements MouseListener, ActionListener 
 }
 
 
-class ColorBox extends JComponent {
+class IndividualColorBox extends JComponent {
 	private static final long serialVersionUID = -5692867526799936540L;
 	private Color color = null;
 	
-	public ColorBox(Color color) { this.color = color; }
+	public IndividualColorBox(Color color) { this.color = color; }
 	public Color getColor() { return color; }
 	public void setColor(Color color) { this.color = color; }
 	
@@ -114,9 +120,8 @@ class ColorBox extends JComponent {
 		super.paintComponent(g);
 		
 		this.setSize(new Dimension(20, 20));
-		g.drawRect(0, 0, 20, 20);
 		g.setColor(color);
-		g.fillRect(1, 1, 19, 19);
+		g.fillRect(0, 0, 19, 19);
 		this.setBorder(new BevelBorder(BevelBorder.RAISED));
 	}
 }

@@ -57,7 +57,7 @@ public class UI {
 			}
 		});
 		
-		panel.add(new ColorPanel(info));
+		panel.add(new ColorSelectPanel(info));
 		panel.add(box);
 		panel.add(strokeBox);
 		panel.add(check);
@@ -82,7 +82,7 @@ class ComboListener implements ItemListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		String item = (String) ((JComboBox<String>)e.getSource()).getSelectedItem();
+		String item = (String)((JComboBox<String>)e.getSource()).getSelectedItem();
 		
 		switch (item) {
 		case "Pen" : info.type = DrawType.Pen; break;
