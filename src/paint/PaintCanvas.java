@@ -1,28 +1,50 @@
 package paint;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 public class PaintCanvas extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = -6029427500054621506L;
+	private ArrayList<PaintInfo> symbols = null;
 	private PaintInfo info = null;
+	private JPanel canvas = new JPanel();
 	private BufferedImage bufferedImage = null;
 	private Graphics2D bufferedGraphics = null;
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public PaintCanvas(PaintInfo info) {
+	public void change() {
+		canvas.getParent().setComponentZOrder(canvas, 0);
+	}
+	
+	public PaintCanvas(ArrayList<PaintInfo> symbols, PaintInfo info) {
+		this.setSize(prevWidth, prevHeight);
+		this.symbols = symbols;
 		this.info = info;
+		this.symbols.add(this.info);
+		this.setOpaque(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
+		
+		/*
+		canvas.setOpaque(false);
+		canvas.setBackground(Color.BLACK);
+		canvas.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+		canvas.setBackground(Color.BLACK);
+		canvas.setLocation(0, 0);
+		this.add(canvas);
+		*/
 	}
 	
 	@Override
@@ -39,7 +61,6 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			bufferedGraphics.drawImage(tmp, null, 0, 0);
 			tmp = null;
 			System.gc();
-			bufferedGraphics.setBackground(Color.WHITE);
 			prevWidth = width;
 			prevHeight = height;
 		}
@@ -117,7 +138,14 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		info.end = e.getPoint();
 		if (info.draggState) {
 			info.draggState = false;
-			this.paintShape(bufferedGraphics);
+			
+			//this.paintShape(bufferedGraphics);
+			PaintInfo tmp = new PaintInfo(info);
+			symbols.add(tmp);
+			ShapeObject Shape = new ShapeObject(tmp);
+			Shape.setLocation(Math.min(info.start.x, info.end.x), Math.min(info.start.y, info.end.y));
+			this.add(Shape);
+			//canvas.getParent().setComponentZOrder(canvas, 0);
 	        this.repaint();
 		}
 	}

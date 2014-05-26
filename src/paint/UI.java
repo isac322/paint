@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +18,8 @@ import javax.swing.JPanel;
 
 public class UI {
 	public static void main(String[] args) {
+		final ArrayList<ArrayList<PaintInfo>> lists = new ArrayList<ArrayList<PaintInfo>>();
+		
 		JFrame frm = new JFrame("Paint");
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.setSize(650, 600);
@@ -25,7 +28,7 @@ public class UI {
 		final PaintInfo info = new PaintInfo();
 		
 		JPanel panel = new JPanel();
-		String [] list = { "Pen", "Rect", "Oval", "Line" };
+		String [] list = { "Pen", "Rect", "Oval", "Line", "Select" };
 		JComboBox<String> box = new JComboBox<String>(list);
 		ComboListener listener = new ComboListener(info);
 		box.addItemListener(listener);
@@ -45,10 +48,21 @@ public class UI {
 		newFrameBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JInternalFrame frm = new JInternalFrame("New Image", true, true, true, true);
-				frm.add(new PaintCanvas(info));
+				ArrayList<PaintInfo> layout = new ArrayList<PaintInfo>();
+				lists.add(layout);
+				frm.add(new PaintCanvas(layout, info));
 				frm.setVisible(true);
 				frm.setSize(300, 300);
 				desktop.add(frm, BorderLayout.CENTER);
+			}
+		});
+		JButton btn = new JButton("new");
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JInternalFrame[] frms = desktop.getAllFrames();
+				PaintCanvas canvas = (PaintCanvas) frms[0].getComponent(0);
+				canvas.change();
 			}
 		});
 		
@@ -57,6 +71,7 @@ public class UI {
 		panel.add(strokeBox);
 		panel.add(check);
 		panel.add(newFrameBtn);
+		panel.add(btn);
 		newFrameBtn.doClick();
 		
 		frm.setLayout(new BorderLayout());
@@ -84,6 +99,7 @@ class ComboListener implements ItemListener {
 		case "Rect" : info.type = DrawType.Rect; break;
 		case "Oval" : info.type = DrawType.Oval; break;
 		case "Line" : info.type = DrawType.Line; break;
+		case "Select" : info.type = DrawType.Select; break;
 		case "1" : info.stroke = new BasicStroke(1); break;
 		case "2" : info.stroke = new BasicStroke(2); break;
 		case "3" : info.stroke = new BasicStroke(3); break;
