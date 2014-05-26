@@ -43,7 +43,7 @@ class ShapeObject extends JComponent {
 		case Rect:
 			if (info.fill) {
 				if (info.color != info.innerColor) g.setColor(info.innerColor);
-				g.fillRect(0, 0, width, height);
+				g.fillRect(0, 0, getWidth() - 1, getHeight());
 			}
 			g.setColor(info.color);
 			g.drawRect(0, 0, width, height);
@@ -52,10 +52,10 @@ class ShapeObject extends JComponent {
 		case Oval:
 			if (info.fill) {
 				if (info.color != info.innerColor) g.setColor(info.innerColor);
-				g.fillOval(0, 0, width, height);
+				g.fillOval(0, 0, getWidth() - 1, getHeight());
 			}
 			g.setColor(info.color);
-			g.drawOval(0, 0, width, height);
+			g.drawOval(0, 0, getWidth() - 1, getHeight());
 			break;
 			
 		case Pen :

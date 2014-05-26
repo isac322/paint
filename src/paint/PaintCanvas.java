@@ -1,6 +1,5 @@
 package paint;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,11 +22,8 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public void change() {
-		canvas.getParent().setComponentZOrder(canvas, 0);
-	}
-	
 	public PaintCanvas(ArrayList<PaintInfo> symbols, PaintInfo info) {
+		//this.setLayout(null);
 		this.setSize(prevWidth, prevHeight);
 		this.symbols = symbols;
 		this.info = info;
@@ -37,14 +33,11 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
 		
-		/*
 		canvas.setOpaque(false);
-		canvas.setBackground(Color.BLACK);
 		canvas.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-		canvas.setBackground(Color.BLACK);
-		canvas.setLocation(0, 0);
+		canvas.setBackground(Color.RED);
 		this.add(canvas);
-		*/
+		canvas.setLocation(0, 0);
 	}
 	
 	@Override
@@ -63,6 +56,8 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			System.gc();
 			prevWidth = width;
 			prevHeight = height;
+			canvas.setLocation(0, 0);
+			canvas.setSize(new Dimension(width, height));
 		}
 
 		g2.drawImage(bufferedImage, null, 0, 0);
@@ -145,8 +140,8 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			ShapeObject Shape = new ShapeObject(tmp);
 			Shape.setLocation(Math.min(info.start.x, info.end.x), Math.min(info.start.y, info.end.y));
 			this.add(Shape);
-			//canvas.getParent().setComponentZOrder(canvas, 0);
-	        this.repaint();
+			canvas.getParent().setComponentZOrder(canvas, 0);
+			//this.repaint();
 		}
 	}
 

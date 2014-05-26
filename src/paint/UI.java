@@ -56,22 +56,12 @@ public class UI {
 				desktop.add(frm, BorderLayout.CENTER);
 			}
 		});
-		JButton btn = new JButton("new");
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JInternalFrame[] frms = desktop.getAllFrames();
-				PaintCanvas canvas = (PaintCanvas) frms[0].getComponent(0);
-				canvas.change();
-			}
-		});
 		
 		panel.add(new ColorPanel(info));
 		panel.add(box);
 		panel.add(strokeBox);
 		panel.add(check);
 		panel.add(newFrameBtn);
-		panel.add(btn);
 		newFrameBtn.doClick();
 		
 		frm.setLayout(new BorderLayout());
