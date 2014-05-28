@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -19,13 +20,13 @@ import javax.swing.JPanel;
 public class UI {
 	public static void main(String[] args) {
 		final ArrayList<ArrayList<PaintInfo>> lists = new ArrayList<ArrayList<PaintInfo>>();
+		final PaintInfo info = new PaintInfo();
 		
 		JFrame frm = new JFrame("Paint");
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.setSize(650, 600);
 		final JDesktopPane desktop = new JDesktopPane();
 
-		final PaintInfo info = new PaintInfo();
 		
 		JPanel panel = new JPanel();
 		String [] list = { "Pen", "Rect", "Oval", "Line", "Select" };
@@ -50,7 +51,7 @@ public class UI {
 				JInternalFrame frm = new JInternalFrame("New Image", true, true, true, true);
 				ArrayList<PaintInfo> layout = new ArrayList<PaintInfo>();
 				lists.add(layout);
-				frm.add(new PaintCanvas(layout, info));
+				frm.add(new PaintCanvas(layout, info, (JComponent)frm.getGlassPane()));
 				frm.setVisible(true);
 				frm.setSize(300, 300);
 				desktop.add(frm, BorderLayout.CENTER);
@@ -67,6 +68,7 @@ public class UI {
 		frm.setLayout(new BorderLayout());
 		frm.add(panel, BorderLayout.NORTH);
 		frm.add(desktop, BorderLayout.CENTER);
+		
 		frm.setLocationRelativeTo(null);
 		frm.setVisible(true);
 	}

@@ -1,7 +1,6 @@
 package paint;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -10,19 +9,22 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class PaintCanvas extends JPanel implements MouseListener, MouseMotionListener {
-	private static final long serialVersionUID = -6029427500054621506L;
+	private static final long serialVersionUID = 5102320731739599274L;
 	private final ArrayList<PaintInfo> drawHistory;
 	private final PaintInfo drawInfo;
-	private JPanel canvas = new JPanel();
+	private final JPanel glass;
 	private BufferedImage bufferImage = null;
 	private Graphics2D bufferGraphics = null;
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public PaintCanvas(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo) {
+	public PaintCanvas(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, JComponent glassPanel) {
+		//this.setLayout(new OverlayLayout(this));
 		this.setSize(prevWidth, prevHeight);
 		this.drawHistory = drawHistory;
 		this.drawInfo = drawInfo;
@@ -31,13 +33,17 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
 		
-		canvas.setOpaque(false);
-		canvas.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-		canvas.setBackground(Color.RED);
-		this.add(canvas);
-		canvas.setLocation(0, 0);
+		this.glass = (JPanel)glassPanel;
+		glass.add(new JButton("asd"));
+		glass.setVisible(true);
+		this.add(glass);
 	}
 	
+	@Override
+	public boolean isOptimizedDrawingEnabled() {
+		return false;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -54,8 +60,6 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			System.gc();
 			prevWidth = width;
 			prevHeight = height;
-			canvas.setLocation(0, 0);
-			canvas.setSize(new Dimension(width, height));
 		}
 
 		g2.drawImage(bufferImage, null, 0, 0);
@@ -122,8 +126,11 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		this.setComponentZOrder(glass, 0);
+		this.repaint();
 		drawInfo.end = drawInfo.start = e.getPoint();
 		drawInfo.draggState = true;
+		System.out.println(e.getSource().getClass().getName());
 	}
 
 	@Override
@@ -138,8 +145,9 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			ObjectiveShape Shape = new ObjectiveShape(tmp);
 			Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x), Math.min(drawInfo.start.y, drawInfo.end.y));
 			this.add(Shape);
-			canvas.getParent().setComponentZOrder(canvas, 0);
-			//this.repaint();
+			this.setComponentZOrder(Shape, 1);
+			this.setComponentZOrder(glass, 0);
+			this.repaint();
 		}
 	}
 

@@ -88,7 +88,7 @@ class ObjectiveShape extends JComponent {
 				setLocation(position);
 				
 				if (overbearing) {
-					getParent().setComponentZOrder(handle, 0);
+					getParent().setComponentZOrder(handle, 1);
 					repaint();
 				}
 			}
