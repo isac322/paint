@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -51,7 +50,7 @@ public class UI {
 				JInternalFrame frm = new JInternalFrame("New Image", true, true, true, true);
 				ArrayList<PaintInfo> layout = new ArrayList<PaintInfo>();
 				lists.add(layout);
-				frm.add(new PaintCanvas(layout, info, (JComponent)frm.getGlassPane()));
+				frm.add(new PaintCanvas(layout, info));
 				frm.setVisible(true);
 				frm.setSize(300, 300);
 				desktop.add(frm, BorderLayout.CENTER);

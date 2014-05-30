@@ -9,22 +9,19 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class PaintCanvas extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 5102320731739599274L;
 	private final ArrayList<PaintInfo> drawHistory;
 	private final PaintInfo drawInfo;
-	private final JPanel glass;
+	private boolean clicked = false;
 	private BufferedImage bufferImage = null;
 	private Graphics2D bufferGraphics = null;
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public PaintCanvas(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, JComponent glassPanel) {
-		//this.setLayout(new OverlayLayout(this));
+	public PaintCanvas(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo) {
 		this.setSize(prevWidth, prevHeight);
 		this.drawHistory = drawHistory;
 		this.drawInfo = drawInfo;
@@ -32,11 +29,6 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
-		
-		this.glass = (JPanel)glassPanel;
-		glass.add(new JButton("asd"));
-		glass.setVisible(true);
-		this.add(glass);
 	}
 	
 	@Override
@@ -61,10 +53,12 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			prevWidth = width;
 			prevHeight = height;
 		}
-
+		
 		g2.drawImage(bufferImage, null, 0, 0);
-		if (drawInfo.type == DrawType.Pen) paintShape(bufferGraphics);
-		else if (drawInfo.draggState) paintShape(g);
+		if (clicked) {
+			if (drawInfo.type == DrawType.Pen) paintShape(bufferGraphics);
+			else if (drawInfo.draggState) paintShape(g);
+		}
 	}
 	
 	void paintShape(Graphics g) {
@@ -72,18 +66,10 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(drawInfo.stroke);
 		
-		int startX = drawInfo.start.x;
-		int startY = drawInfo.start.y;
-		int width = drawInfo.end.x - drawInfo.start.x;
-		int height = drawInfo.end.y - drawInfo.start.y;
-		if (drawInfo.end.x < drawInfo.start.x) {
-			startX = drawInfo.end.x;
-			width = drawInfo.start.x - drawInfo.end.x;
-		}
-		if (drawInfo.end.y < drawInfo.start.y) {
-			startY = drawInfo.end.y;
-			height = drawInfo.start.y - drawInfo.end.y;
-		}
+		int startX = Math.min(drawInfo.start.x, drawInfo.end.x);
+		int startY = Math.min(drawInfo.start.y, drawInfo.end.y);
+		int width = Math.abs(drawInfo.end.x - drawInfo.start.x);
+		int height = Math.abs(drawInfo.end.y - drawInfo.start.y);
 		
 		switch(drawInfo.type) {
 		case Rect:
@@ -126,11 +112,10 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		this.setComponentZOrder(glass, 0);
-		this.repaint();
+		System.out.println("pressed");
+		clicked = true;
 		drawInfo.end = drawInfo.start = e.getPoint();
 		drawInfo.draggState = true;
-		System.out.println(e.getSource().getClass().getName());
 	}
 
 	@Override
@@ -139,16 +124,19 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 		if (drawInfo.draggState) {
 			drawInfo.draggState = false;
 			
-			//this.paintShape(bufferGraphics);
-			PaintInfo tmp = new PaintInfo(drawInfo);
-			drawHistory.add(tmp);
-			ObjectiveShape Shape = new ObjectiveShape(tmp);
-			Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x), Math.min(drawInfo.start.y, drawInfo.end.y));
-			this.add(Shape);
-			this.setComponentZOrder(Shape, 1);
-			this.setComponentZOrder(glass, 0);
-			this.repaint();
+			if (drawInfo.type == DrawType.Pen || drawInfo.type == DrawType.Line) {
+				paintShape(bufferGraphics);
+			} else {
+				//this.paintShape(bufferGraphics);
+				PaintInfo tmp = new PaintInfo(drawInfo);
+				drawHistory.add(tmp);
+				ObjectiveShape Shape = new ObjectiveShape(tmp);
+				Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x), Math.min(drawInfo.start.y, drawInfo.end.y));
+				this.add(Shape);
+				this.setComponentZOrder(Shape, 0);
+			}
 		}
+		clicked = false;
 	}
 
 	@Override

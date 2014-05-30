@@ -6,8 +6,8 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 public class PaintInfo {
-	Point start = new Point(0,0);
-	Point end = new Point(0,0);
+	Point start = new Point(-10, -10);
+	Point end = new Point(-10, -10);
 	DrawType type = DrawType.Pen;
 	Color color = Color.BLACK;
 	Color innerColor = Color.WHITE;

@@ -50,11 +50,6 @@ class ObjectiveShape extends JComponent {
 			g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
 			break;
 			
-		case Pen :
-		case Line :
-			g.drawLine(drawInfo.start.x, drawInfo.start.y, drawInfo.end.x, drawInfo.end.y);
-			break;
-			
 		default:
 			System.exit(1);
 			break;
@@ -88,8 +83,7 @@ class ObjectiveShape extends JComponent {
 				setLocation(position);
 				
 				if (overbearing) {
-					getParent().setComponentZOrder(handle, 1);
-					repaint();
+					getParent().setComponentZOrder(handle, 0);
 				}
 			}
 		});
