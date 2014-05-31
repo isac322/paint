@@ -3,7 +3,6 @@ package paint;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Stroke;
 
 public class PaintInfo {
 	Point start = new Point(-10, -10);
@@ -15,7 +14,7 @@ public class PaintInfo {
 	boolean draggState = false;
 	boolean fill = false;
 	int fontSize;
-	Stroke stroke = new BasicStroke(1);
+	BasicStroke stroke = new BasicStroke(1);
 	
 	public PaintInfo() {}
 	public PaintInfo(PaintInfo info) {

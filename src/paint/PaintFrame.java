@@ -1,6 +1,5 @@
 package paint;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
@@ -21,13 +20,5 @@ public class PaintFrame extends JInternalFrame {
 		this.setGlassPane(glass);
 		this.setVisible(true);
 		this.setSize(300, 300);
-	}
-	
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		if (drawInfo.type == DrawType.Select) glass.setVisible(false);
-		else glass.setVisible(true);
 	}
 }

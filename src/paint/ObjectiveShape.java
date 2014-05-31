@@ -1,5 +1,6 @@
 package paint;
 
+import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,13 +15,15 @@ class ObjectiveShape extends JComponent {
 	protected Point anchorPoint;
 	protected boolean overbearing = true;
 	private PaintInfo drawInfo = null;
+	private int strokeWidth = 0;
 	
 	public ObjectiveShape(PaintInfo drawInfo) {
 		this.drawInfo = drawInfo;
 		this.addDragListeners();
 		this.setOpaque(false);
-		this.setSize(Math.abs(drawInfo.end.x - drawInfo.start.x) + 1,
-				Math.abs(drawInfo.end.y - drawInfo.start.y) + 1);
+		strokeWidth = (int) (((BasicStroke) drawInfo.stroke).getLineWidth() + 0.5);
+		this.setSize(Math.abs(drawInfo.end.x - drawInfo.start.x)+ 2*strokeWidth,
+				Math.abs(drawInfo.end.y - drawInfo.start.y)+ 2*strokeWidth);
 	}
 	
 	@Override
@@ -30,24 +33,33 @@ class ObjectiveShape extends JComponent {
 		g.setColor(drawInfo.color);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(drawInfo.stroke);
+		strokeWidth = (int) (((BasicStroke) drawInfo.stroke).getLineWidth() + 0.5);
 		
 		switch(drawInfo.type) {
 		case Rect:
 			if (drawInfo.fill) {
 				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
-				g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+				g.fillRect(strokeWidth, strokeWidth,
+						getWidth() - 2*strokeWidth,
+						getHeight() - 2*strokeWidth);
 			}
 			g.setColor(drawInfo.color);
-			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+			g.drawRect(strokeWidth, strokeWidth,
+					getWidth() - 2*strokeWidth,
+					getHeight() - 2*strokeWidth);
 			break;
 			
 		case Oval:
 			if (drawInfo.fill) {
 				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
-				g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
+				g.fillOval(strokeWidth, strokeWidth,
+						getWidth() - 2*strokeWidth,
+						getHeight() - 2*strokeWidth);
 			}
 			g.setColor(drawInfo.color);
-			g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+			g.drawOval(strokeWidth, strokeWidth,
+					getWidth() - 2*strokeWidth,
+					getHeight() - 2*strokeWidth);
 			break;
 			
 		default:

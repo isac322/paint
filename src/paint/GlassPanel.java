@@ -14,6 +14,7 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 	private final PaintInfo drawInfo;
 	
 	public GlassPanel(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, PaintCanvas canvas) {
+		this.setVisible(true);
 		this.setOpaque(false);
 		this.drawInfo = drawInfo;
 		this.drawHistory = drawHistory;
@@ -35,7 +36,7 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 	public void mousePressed(MouseEvent e) {
 		drawInfo.clickState = true;
 		drawInfo.end = drawInfo.start = e.getPoint();
-		//drawInfo.draggState = true;
+		drawInfo.draggState = true;
 	}
 
 	@Override
@@ -50,7 +51,8 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 				PaintInfo tmp = new PaintInfo(drawInfo);
 				drawHistory.add(tmp);
 				ObjectiveShape Shape = new ObjectiveShape(tmp);
-				Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x), Math.min(drawInfo.start.y, drawInfo.end.y));
+				Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x) - (int)(drawInfo.stroke.getLineWidth() + 0.5),
+						Math.min(drawInfo.start.y, drawInfo.end.y) - (int)(drawInfo.stroke.getLineWidth() + 0.5));
 				canvas.add(Shape);
 				canvas.setComponentZOrder(Shape, 0);
 				canvas.repaint();
