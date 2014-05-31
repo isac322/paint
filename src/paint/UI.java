@@ -13,13 +13,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 public class UI {
 	public static void main(String[] args) {
 		final ArrayList<ArrayList<PaintInfo>> lists = new ArrayList<ArrayList<PaintInfo>>();
-		final PaintInfo info = new PaintInfo();
+		final PaintInfo drawInfo = new PaintInfo();
 		
 		JFrame frm = new JFrame("Paint");
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,7 +29,7 @@ public class UI {
 		JPanel panel = new JPanel();
 		String [] list = { "Pen", "Rect", "Oval", "Line", "Select" };
 		JComboBox<String> box = new JComboBox<String>(list);
-		ComboListener listener = new ComboListener(info);
+		ComboListener listener = new ComboListener(drawInfo);
 		box.addItemListener(listener);
 		
 		String [] strokeList = { "1", "2", "3", "4", "5", "6" };
@@ -40,24 +39,21 @@ public class UI {
 		JCheckBox check = new JCheckBox("fill", false);
 		check.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				info.fill = ((JCheckBox)e.getSource()).isSelected();
+				drawInfo.fill = ((JCheckBox)e.getSource()).isSelected();
 			}
 		});
 		
 		JButton newFrameBtn = new JButton("New Window");
 		newFrameBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JInternalFrame frm = new JInternalFrame("New Image", true, true, true, true);
 				ArrayList<PaintInfo> layout = new ArrayList<PaintInfo>();
 				lists.add(layout);
-				frm.add(new PaintCanvas(layout, info));
-				frm.setVisible(true);
-				frm.setSize(300, 300);
-				desktop.add(frm, BorderLayout.CENTER);
+				PaintFrame frm = new PaintFrame(layout, drawInfo);
+				desktop.add(frm);
 			}
 		});
 		
-		panel.add(new ColorSelectPanel(info));
+		panel.add(new ColorSelectPanel(drawInfo));
 		panel.add(box);
 		panel.add(strokeBox);
 		panel.add(check);
@@ -74,10 +70,10 @@ public class UI {
 }
 
 class ComboListener implements ItemListener {
-	private PaintInfo info = null;
+	private PaintInfo drawInfo = null;
 	
-	public ComboListener(PaintInfo info) {
-		this.info = info;
+	public ComboListener(PaintInfo drawInfo) {
+		this.drawInfo = drawInfo;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,17 +82,17 @@ class ComboListener implements ItemListener {
 		String item = (String)((JComboBox<String>)e.getSource()).getSelectedItem();
 		
 		switch (item) {
-		case "Pen" : info.type = DrawType.Pen; break;
-		case "Rect" : info.type = DrawType.Rect; break;
-		case "Oval" : info.type = DrawType.Oval; break;
-		case "Line" : info.type = DrawType.Line; break;
-		case "Select" : info.type = DrawType.Select; break;
-		case "1" : info.stroke = new BasicStroke(1); break;
-		case "2" : info.stroke = new BasicStroke(2); break;
-		case "3" : info.stroke = new BasicStroke(3); break;
-		case "4" : info.stroke = new BasicStroke(4); break;
-		case "5" : info.stroke = new BasicStroke(5); break;
-		case "6" : info.stroke = new BasicStroke(6); break;
+		case "Pen" : drawInfo.type = DrawType.Pen; break;
+		case "Rect" : drawInfo.type = DrawType.Rect; break;
+		case "Oval" : drawInfo.type = DrawType.Oval; break;
+		case "Line" : drawInfo.type = DrawType.Line; break;
+		case "Select" : drawInfo.type = DrawType.Select; break;
+		case "1" : drawInfo.stroke = new BasicStroke(1); break;
+		case "2" : drawInfo.stroke = new BasicStroke(2); break;
+		case "3" : drawInfo.stroke = new BasicStroke(3); break;
+		case "4" : drawInfo.stroke = new BasicStroke(4); break;
+		case "5" : drawInfo.stroke = new BasicStroke(5); break;
+		case "6" : drawInfo.stroke = new BasicStroke(6); break;
 		}
 	}
 }

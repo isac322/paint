@@ -11,6 +11,7 @@ public class PaintInfo {
 	DrawType type = DrawType.Pen;
 	Color color = Color.BLACK;
 	Color innerColor = Color.WHITE;
+	boolean clickState = false;
 	boolean draggState = false;
 	boolean fill = false;
 	int fontSize;

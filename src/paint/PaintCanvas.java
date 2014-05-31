@@ -3,42 +3,32 @@ package paint;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class PaintCanvas extends JPanel implements MouseListener, MouseMotionListener {
+public class PaintCanvas extends JPanel {
 	private static final long serialVersionUID = 5102320731739599274L;
-	private final ArrayList<PaintInfo> drawHistory;
 	private final PaintInfo drawInfo;
-	private boolean clicked = false;
 	private BufferedImage bufferImage = null;
 	private Graphics2D bufferGraphics = null;
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public PaintCanvas(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo) {
+	public PaintCanvas(PaintInfo drawInfo) {
+		this.setLayout(null);
 		this.setSize(prevWidth, prevHeight);
-		this.drawHistory = drawHistory;
 		this.drawInfo = drawInfo;
 		this.setOpaque(false);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
 		this.setBackground(Color.WHITE);
 	}
 	
-	@Override
-	public boolean isOptimizedDrawingEnabled() {
-		return false;
-	}
+	public Graphics2D getBufferGraphics() { return this.bufferGraphics; }
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.drawRect(10, 10, 50, 50);
 		Graphics2D g2 = (Graphics2D) g;
 		
 		int width = this.getWidth();
@@ -49,19 +39,18 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			bufferGraphics = (Graphics2D)bufferImage.getGraphics();
 			bufferGraphics.drawImage(tmp, null, 0, 0);
 			tmp = null;
-			System.gc();
 			prevWidth = width;
 			prevHeight = height;
 		}
 		
 		g2.drawImage(bufferImage, null, 0, 0);
-		if (clicked) {
+		if (drawInfo.clickState) {
 			if (drawInfo.type == DrawType.Pen) paintShape(bufferGraphics);
 			else if (drawInfo.draggState) paintShape(g);
 		}
 	}
 	
-	void paintShape(Graphics g) {
+	public void paintShape(Graphics g) {
 		g.setColor(drawInfo.color);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(drawInfo.stroke);
@@ -99,51 +88,5 @@ public class PaintCanvas extends JPanel implements MouseListener, MouseMotionLis
 			System.exit(1);
 			break;
 		}
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
-	@Override
-	public void mouseMoved(MouseEvent e) {}
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		clicked = true;
-		drawInfo.end = drawInfo.start = e.getPoint();
-		drawInfo.draggState = true;
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		drawInfo.end = e.getPoint();
-		if (drawInfo.draggState) {
-			drawInfo.draggState = false;
-			
-			if (drawInfo.type == DrawType.Pen || drawInfo.type == DrawType.Line) {
-				paintShape(bufferGraphics);
-			} else {
-				PaintInfo tmp = new PaintInfo(drawInfo);
-				drawHistory.add(tmp);
-				ObjectiveShape Shape = new ObjectiveShape(tmp);
-				Shape.setLocation(Math.min(drawInfo.start.x, drawInfo.end.x), Math.min(drawInfo.start.y, drawInfo.end.y));
-				this.add(Shape);
-				this.setComponentZOrder(Shape, 0);
-			}
-		}
-		clicked = false;
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if (drawInfo.type == DrawType.Pen) {
-			drawInfo.start = drawInfo.end;
-		}
-		drawInfo.end = e.getPoint();
-		drawInfo.draggState = true;
-		this.repaint();
 	}
 }
