@@ -54,7 +54,7 @@ public class ColorSelectPanel extends JPanel implements MouseListener, ActionLis
 		moreColorBtn.setSize(60, 60);
 		moreColorBtn.addActionListener(this);
 		this.add(moreColorBtn);
-		this.setPreferredSize(new Dimension(310, 60));
+		this.setPreferredSize(new Dimension(310, 55));
 	}
 	
 	@Override
@@ -111,7 +111,12 @@ class IndividualColorBox extends JComponent {
 	private static final long serialVersionUID = -5692867526799936540L;
 	private Color color = null;
 	
-	public IndividualColorBox(Color color) { this.color = color; }
+	public IndividualColorBox(Color color) {
+		this.color = color;
+		this.setPreferredSize(new Dimension(20, 20));
+		this.setBorder(new BevelBorder(BevelBorder.RAISED));
+	}
+	
 	public Color getColor() { return color; }
 	public void setColor(Color color) { this.color = color; }
 	
@@ -119,9 +124,7 @@ class IndividualColorBox extends JComponent {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		this.setSize(new Dimension(20, 20));
 		g.setColor(color);
-		g.fillRect(0, 0, 19, 19);
-		this.setBorder(new BevelBorder(BevelBorder.RAISED));
+		g.fillRect(0, 0, 19, 29);
 	}
 }
