@@ -1,20 +1,20 @@
-package paint;
+package paint.model;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
 
 public class PaintInfo {
-	Point start = new Point(-10, -10);
-	Point end = new Point(-10, -10);
-	DrawType type = DrawType.Pen;
-	Color color = Color.BLACK;
-	Color innerColor = Color.WHITE;
-	boolean clickState = false;
-	boolean draggState = false;
-	boolean fill = false;
-	int fontSize;
-	BasicStroke stroke = new BasicStroke(1);
+	public Point start = new Point(-10, -10);
+	public Point end = new Point(-10, -10);
+	public DrawType type = DrawType.Pen;
+	public Color color = Color.BLACK;
+	public Color innerColor = Color.WHITE;
+	public boolean clickState = false;
+	public boolean draggState = false;
+	public boolean fill = false;
+	public int fontSize;
+	public BasicStroke stroke = new BasicStroke(1);
 	
 	public PaintInfo() {}
 	public PaintInfo(PaintInfo info) {

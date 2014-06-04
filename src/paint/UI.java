@@ -16,6 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import paint.canvas.PaintFrame;
+import paint.model.DrawType;
+import paint.model.PaintInfo;
+
 public class UI {
 	public static void main(String[] args) {
 		final ArrayList<ArrayList<PaintInfo>> lists = new ArrayList<ArrayList<PaintInfo>>();

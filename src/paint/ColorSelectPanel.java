@@ -16,6 +16,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import paint.model.PaintInfo;
+
 public class ColorSelectPanel extends JPanel implements MouseListener, ActionListener {
 	private static final long serialVersionUID = -5692867526799936540L;
 	private final PaintInfo info;

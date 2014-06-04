@@ -1,4 +1,4 @@
-package paint;
+package paint.canvas;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,8 +7,13 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import paint.canvas.paint.canvas.resize.ResizePanel;
+import paint.model.DrawType;
+import paint.model.PaintInfo;
+
 public class PaintCanvas extends JPanel {
 	private static final long serialVersionUID = 5102320731739599274L;
+	private final ResizePanel resizePanel;
 	private final PaintInfo drawInfo;
 	private BufferedImage bufferImage = null;
 	private Graphics2D bufferGraphics = null;
@@ -16,15 +21,22 @@ public class PaintCanvas extends JPanel {
 	private int prevHeight = 400;
 	
 	public PaintCanvas(PaintInfo drawInfo) {
+		this.drawInfo = drawInfo;
 		this.setLayout(null);
 		this.setSize(prevWidth, prevHeight);
-		this.drawInfo = drawInfo;
+		
+		this.resizePanel = new ResizePanel();
+		resizePanel.setBounds(10, 10, 100, 100);
+		resizePanel.setVisible(false);
+		this.add(resizePanel);
+		
 		this.setOpaque(false);
 		this.setBackground(Color.WHITE);
 	}
 	
 	public Graphics2D getBufferGraphics() { return this.bufferGraphics; }
-
+	public ResizePanel getResizePanel() { return resizePanel; }
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

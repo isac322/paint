@@ -1,8 +1,10 @@
-package paint;
+package paint.canvas;
 
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
+
+import paint.model.PaintInfo;
 
 public class PaintFrame extends JInternalFrame {
 	private static final long serialVersionUID = -8697445633303131846L;
@@ -16,7 +18,7 @@ public class PaintFrame extends JInternalFrame {
 		canvas = new PaintCanvas(drawInfo);
 		glass = new GlassPanel(drawHistory, drawInfo, canvas);
 		
-		this.getContentPane().add(canvas);
+		this.add(canvas);
 		this.setGlassPane(glass);
 		this.setVisible(true);
 		this.setSize(300, 300);
