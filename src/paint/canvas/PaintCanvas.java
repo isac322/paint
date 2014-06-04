@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import paint.canvas.paint.canvas.resize.ResizePanel;
+import paint.canvas.resize.ResizePanel;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
 

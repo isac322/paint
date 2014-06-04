@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
-import paint.canvas.paint.canvas.resize.ResizePanel;
+import paint.canvas.resize.ResizePanel;
 import paint.model.PaintInfo;
 
 public class ObjectiveShape extends JComponent {

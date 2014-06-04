@@ -1,4 +1,4 @@
-package paint.canvas.paint.canvas.resize;
+package paint.canvas.resize;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
