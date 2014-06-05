@@ -66,6 +66,19 @@ public class ObjectiveShape extends JComponent {
 					getHeight() - 2*strokeWidth);
 			break;
 			
+		case RoundRect:
+			if (getDrawInfo().fill) {
+				if (getDrawInfo().color != getDrawInfo().innerColor) g.setColor(getDrawInfo().innerColor);
+				g.fillRoundRect(strokeWidth, strokeWidth,
+						getWidth() - 2*strokeWidth,
+						getHeight() - 2*strokeWidth, 50, 50);
+			}
+			g.setColor(getDrawInfo().color);
+			g.drawRoundRect(strokeWidth, strokeWidth,
+					getWidth() - 2*strokeWidth,
+					getHeight() - 2*strokeWidth, 50, 50);
+			break;
+			
 		default:
 			System.exit(1);
 			break;

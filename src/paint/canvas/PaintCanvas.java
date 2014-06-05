@@ -3,6 +3,8 @@ package paint.canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -30,6 +32,12 @@ public class PaintCanvas extends JPanel {
 		resizePanel.setVisible(false);
 		this.add(resizePanel);
 		
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				resizePanel.setVisible(false);
+			}
+		});
 		this.setOpaque(false);
 		this.setBackground(Color.WHITE);
 	}
@@ -89,6 +97,19 @@ public class PaintCanvas extends JPanel {
 			}
 			g.setColor(drawInfo.color);
 			g.drawOval(startX, startY, width, height);
+			break;
+			
+		case RoundRect:
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
+				g.fillRoundRect(startX, startY,
+						width,
+						height, 10, 10);
+			}
+			g.setColor(drawInfo.color);
+			g.drawRoundRect(startX, startY,
+					width,
+					height, 50, 50);
 			break;
 			
 		case Pen :
