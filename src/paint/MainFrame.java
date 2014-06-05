@@ -275,6 +275,7 @@ public class MainFrame extends JFrame
 					JInternalFrame[] frms = desktop.getAllFrames();
 					for (JInternalFrame f : frms) {
 						f.getGlassPane().setVisible(true);
+						((PaintFrame) f).disableResizePane();
 					}
 				}
 			}
@@ -368,9 +369,11 @@ public class MainFrame extends JFrame
 					{
 						paintInfo.type = DrawType.RoundRect;
 					}
+
 					JInternalFrame[] frms = desktop.getAllFrames();
 					for (JInternalFrame f : frms) {
 						f.getGlassPane().setVisible(true);
+						((PaintFrame) f).disableResizePane();
 					}
 				}
 			}

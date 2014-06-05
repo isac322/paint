@@ -3,8 +3,6 @@ package paint.canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -22,22 +20,13 @@ public class PaintCanvas extends JPanel {
 	private int prevWidth = 400;
 	private int prevHeight = 400;
 	
-	public PaintCanvas(PaintInfo drawInfo) {
+	public PaintCanvas(PaintInfo drawInfo, ResizePanel resizePanel) {
 		this.drawInfo = drawInfo;
 		this.setLayout(null);
 		this.setSize(prevWidth, prevHeight);
 		
-		this.resizePanel = new ResizePanel();
-		resizePanel.setBounds(10, 10, 100, 100);
-		resizePanel.setVisible(false);
-		this.add(resizePanel);
+		this.resizePanel = resizePanel;
 		
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				resizePanel.setVisible(false);
-			}
-		});
 		this.setOpaque(false);
 		this.setBackground(Color.WHITE);
 	}

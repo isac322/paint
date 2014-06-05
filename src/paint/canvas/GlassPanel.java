@@ -17,13 +17,19 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 	private final PaintInfo drawInfo;
 	
 	public GlassPanel(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, PaintCanvas canvas) {
-		this.setVisible(true);
 		this.setOpaque(false);
 		this.drawInfo = drawInfo;
 		this.drawHistory = drawHistory;
 		this.canvas = canvas;
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+	}
+	
+	@Override
+	public void setVisible(boolean flag) {
+		super.setVisible(flag);
+		
+		if (flag) this.getParent().setComponentZOrder(this, 0);
 	}
 	
 	@Override
