@@ -38,6 +38,17 @@ public class MainFrame extends JFrame
 	//main() method for test :D
 	public static void main(String[] args)
 	{
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		MainFrame mainFrame = new MainFrame();
 		
 		mainFrame.setVisible(true);
