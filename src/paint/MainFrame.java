@@ -22,12 +22,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
-
-import javax.swing.event.*;
-
 import java.util.ArrayList;
 
-import paint.*;
 import paint.canvas.PaintFrame;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
@@ -37,6 +33,8 @@ import paint.model.PaintInfo;
 /////////////////////
 public class MainFrame extends JFrame
 {
+	private static final long serialVersionUID = -8061752372147178965L;
+
 	//main() method for test :D
 	public static void main(String[] args)
 	{
@@ -46,12 +44,12 @@ public class MainFrame extends JFrame
 	}
 
 	/* instance variables */
-	private PaintInfo                       paintInfo              = new PaintInfo();
-	private ArrayList<ArrayList<PaintInfo>> paintingHistoryManager = new ArrayList<ArrayList<PaintInfo>>();
+	private PaintInfo						paintInfo				= new PaintInfo();
+	private ArrayList<ArrayList<PaintInfo>> paintingHistoryManager	= new ArrayList<ArrayList<PaintInfo>>();
 	
-	private MenuBar         menuBar         = new MenuBar();
-	private ToolBasketPanel toolBasketPanel = new ToolBasketPanel();
-	private Desktop         desktop         = new Desktop();
+	private MenuBar			menuBar			= new MenuBar();
+	private ToolBasketPanel	toolBasketPanel	= new ToolBasketPanel();
+	private Desktop			desktop			= new Desktop();
 	
 	/* constructor */
 	public MainFrame()
@@ -75,13 +73,14 @@ public class MainFrame extends JFrame
 	////////////////////////////////////////
 	private class MenuBar extends JMenuBar
 	{
+		private static final long serialVersionUID = -6907355447016973325L;
 		/* instance variables */
-		public JMenu     file = new JMenu("File");
+		public JMenu	 file = new JMenu("File");
 		public JMenuItem save = new JMenuItem("Save");
 		public JMenuItem open = new JMenuItem("Open");
 		
-		public JMenu     color        = new JMenu("Color");
-		public JMenuItem colorChooser = new JMenuItem("Color Chooser");
+		public JMenu		color			= new JMenu("Color");
+		public JMenuItem	colorChooser	= new JMenuItem("Color Chooser");
 		
 		/* constructor */
 		public MenuBar()
@@ -125,8 +124,7 @@ public class MainFrame extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				JColorChooser jColorChooser = new JColorChooser();
-				Color colorChoose = jColorChooser.showDialog(getMainFrame(), "Color Chooser", paintInfo.color);
+				Color colorChoose = JColorChooser.showDialog(getMainFrame(), "Color Chooser", paintInfo.color);
 				
 				toolBasketPanel.toolPanel05.getCurrentFocusPanel().setBackground(colorChoose);
 				
@@ -148,6 +146,7 @@ public class MainFrame extends JFrame
 	/////////////////////////////////////////////////
 	private class ToolBasketPanel extends JPanel
 	{
+		private static final long serialVersionUID = 7822254494211034905L;
 		/* instance variables */
 		public ToolPanel01 toolPanel01 = new ToolPanel01();
 		public ToolPanel02 toolPanel02 = new ToolPanel02();
@@ -176,6 +175,7 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel01 extends JPanel
 		{
+			private static final long serialVersionUID = 3006433209919308008L;
 			/* instance variables */
 			public JButton newPaintFrame       = new JButton("New Paint Frame");
 			public JButton deleteAllPaintFrame = new JButton("Delete All Paint Frame");
@@ -216,8 +216,9 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel02 extends JPanel
 		{
+			private static final long serialVersionUID = -8045151139249778020L;
 			/* instance variables */
-			public JComboBox penSizeSelectBox;
+			public JComboBox<String> penSizeSelectBox;
 			public String[]  penSizeList;
 			
 			public JButton   pen    = new JButton("Pen");
@@ -233,7 +234,7 @@ public class MainFrame extends JFrame
 					penSizeList[i] = new String(String.format("%d", i + 1));
 				}
 				
-				penSizeSelectBox = new JComboBox(penSizeList);
+				penSizeSelectBox = new JComboBox<String>(penSizeList);
 				
 				penSizeSelectBox.addActionListener(new ToolPanel02Handler01());
 				add(penSizeSelectBox);
@@ -306,6 +307,7 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel03 extends JPanel
 		{
+			private static final long serialVersionUID = -1681703710675211529L;
 			/* instance variables */
 			public JButton line      = new JButton("Line");
 			public JButton rect      = new JButton("Rect");
@@ -368,14 +370,16 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel04 extends JPanel
 		{
+			private static final long serialVersionUID = -456947901695937121L;
+
 			/* instance variables */
 			public JButton      string = new JButton("String");
 			
-			public JComboBox    fontSelectBox;
-			public JTextField[] fontList;
+			public JComboBox<JTextField>	fontSelectBox;
+			public JTextField[]				fontList;
 			
-			public JComboBox    fontSizeSelectBox;
-			public String[]     fontSizeList;
+			public JComboBox<String>	fontSizeSelectBox;
+			public String[]				fontSizeList;
 			
 			/* constructor */
 			public ToolPanel04()
@@ -387,14 +391,14 @@ public class MainFrame extends JFrame
 				fontList[0].setFont(new Font(Font.SERIF, Font.PLAIN, 8));
 				fontList[1].setFont(new Font(Font.SERIF, Font.BOLD, 8));
 				fontList[2].setFont(new Font(Font.SERIF, Font.ITALIC, 8));
-				fontSelectBox = new JComboBox(fontList);
+				fontSelectBox = new JComboBox<JTextField>(fontList);
 				
 				fontSizeList = new String[16];
 				for(int i = 0; i < fontSizeList.length; i++)
 				{
 					fontSizeList[i] = new String(String.format("%d", i + 8));
 				}
-				fontSizeSelectBox = new JComboBox(fontSizeList);
+				fontSizeSelectBox = new JComboBox<String>(fontSizeList);
 			
 				add(string);
 				add(fontSelectBox);
@@ -407,6 +411,7 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel05 extends JPanel
 		{
+			private static final long serialVersionUID = -5647035712793291383L;
 			/* instance variables */
 			public JPanel colorPanel01 = new JPanel();
 			public JPanel colorPanel02 = new JPanel();
@@ -472,6 +477,7 @@ public class MainFrame extends JFrame
 		/////////////////////////////////////////////////
 		private class ToolPanel06 extends JPanel
 		{
+			private static final long serialVersionUID = -6044480464697216248L;
 			/* instance variables */
 			public Color[]  basicColors = {Color.WHITE, Color.WHITE, Color.BLACK, Color.DARK_GRAY, Color.GRAY, Color.LIGHT_GRAY, Color.RED, Color.ORANGE, Color.PINK, Color.YELLOW, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA};
 			public JPanel[] basicColorPanels;
@@ -526,6 +532,8 @@ public class MainFrame extends JFrame
 	////////////////////////////////////////
 	private class Desktop extends JDesktopPane
 	{
+		private static final long serialVersionUID = -3997872200322951523L;
+
 		/* instance variables */
 		public ArrayList<PaintFrame> paintFrameList = new ArrayList<PaintFrame>();
 		
