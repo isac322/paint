@@ -29,12 +29,18 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 	private final PaintInfo drawInfo;
 	private final GlassPanel glass;
 	private final JPanel overlay;
+	private final ArrayList<PaintInfo> drawHistory;
 	private final ArrayList<PaintCanvas> layout = new ArrayList<PaintCanvas>();
+	
+	JLayeredPane layer;
 	
 	public PaintFrame(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, int width, int height) {
 		super("New Image", true, true, true, true);
+		this.drawHistory = drawHistory;
 		
 		overlay = new JPanel() {
+			private static final long serialVersionUID = 7755645820672734083L;
+
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}
@@ -47,7 +53,10 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		//this.add(overlay, BorderLayout.CENTER);
 		//this.setContentPane(overlay);
 		
-		this.getContentPane().setLayout(null);
+		//this.getContentPane().setLayout(null);
+		
+		//layer = this.getLayeredPane();
+		//layer.setOpaque(false);
 		
 		this.drawInfo = drawInfo;
 		resizePanel = new ResizePanel();
@@ -66,6 +75,7 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		
 		layout.add(canvas);
 		this.add(canvas);
+		canvas.setSize(width, height);
 		JButton btn = new JButton("a");
 		btn.setBounds(10, 10, 60, 60);
 		canvas.add(btn);
@@ -92,9 +102,8 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 	 * @param index 레이어 리스트에서의 인덱스
 	 */
 	public void setTargetCanvas(int index) { 
-		//System.out.println(layout.get(index));
 		glass.setTargetCanvas(layout.get(index));
-		this.getContentPane().setComponentZOrder(layout.get(index), 1);
+		//this.getContentPane().setComponentZOrder(layout.get(index), 1);
 	}
 	
 	
@@ -104,7 +113,21 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 	public void addLayout() {
 		PaintCanvas newCanvas = new PaintCanvas(drawInfo, resizePanel);
 		layout.add(newCanvas);
+		JButton btn = new JButton("b");
+		btn.setBounds(30, 30, 60, 60);
+		newCanvas.add(btn);
 		this.add(newCanvas);
-		this.getContentPane().validate();
+		//newCanvas.setSize(400, 400);
+	}
+	
+	public void repaintAll() {
+		for (int i = 0; i < this.drawHistory.size(); i++) {
+			ObjectiveShape Shape = new ObjectiveShape(drawHistory.get(i), resizePanel);
+			
+			Shape.setLocation(drawHistory.get(i).start.x - (int)(drawHistory.get(i).stroke.getLineWidth() + 0.5),
+					drawHistory.get(i).start.y - (int)(drawHistory.get(i).stroke.getLineWidth() + 0.5));
+			canvas.add(Shape);
+			canvas.setComponentZOrder(Shape, 0);
+		}
 	}
 }
