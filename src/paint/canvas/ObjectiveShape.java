@@ -22,6 +22,7 @@ public class ObjectiveShape extends JComponent implements Serializable {
 	private int strokeWidth = 0;
 	
 	public ObjectiveShape(PaintInfo drawInfo, ResizePanel resizePanel) {
+		super();
 		this.resizePanel = resizePanel;
 		this.drawInfo = drawInfo;
 		this.addDragListeners();

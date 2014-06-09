@@ -32,10 +32,11 @@ public class PaintCanvas extends JPanel implements Serializable {
 	private int prevHeight = 400;
 	
 	public PaintCanvas(PaintInfo drawInfo, ResizePanel resizePanel) {
-		this.setPreferredSize(new Dimension(prevWidth, prevHeight));
+		super();
+		//this.setPreferredSize(new Dimension(prevWidth, prevHeight));
+		this.setSize(prevWidth, prevHeight);
 		this.drawInfo = drawInfo;
 		this.setLayout(null);
-		this.setSize(prevWidth, prevHeight);
 		
 		this.resizePanel = resizePanel;
 		
