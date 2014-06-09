@@ -24,6 +24,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import paint.canvas.PaintCanvas;
 import paint.canvas.PaintFrame;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
@@ -350,7 +351,7 @@ public class MainFrame extends JFrame
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if(e.getSource() == line)					
+					if(e.getSource() == line)
 					{
 						paintInfo.type = DrawType.Line;
 					}
@@ -358,11 +359,13 @@ public class MainFrame extends JFrame
 					if(e.getSource() == rect)
 					{
 						paintInfo.type = DrawType.Rect;
+						((PaintFrame) desktop.getSelectedFrame()).setTargetCanvas(1);
 					}
 					
 					if(e.getSource() == oval)
 					{
 						paintInfo.type = DrawType.Oval;
+						((PaintFrame) desktop.getSelectedFrame()).setTargetCanvas(0);
 					}
 					
 					if(e.getSource() == roundRect)
@@ -565,13 +568,15 @@ public class MainFrame extends JFrame
 		{
 			ArrayList<PaintInfo> temp = new ArrayList<PaintInfo>();
 			paintingHistoryManager.add(temp);
-						
-			PaintFrame temp2 = new PaintFrame(temp, paintInfo);
+
+			PaintFrame temp2 = new PaintFrame(temp, paintInfo, getMainFrame().getWidth() / 2, getMainFrame().getHeight() / 2);
 			paintFrameList.add(temp2);
 			
 			temp2.setBounds(popX, popY, getMainFrame().getWidth() / 2, getMainFrame().getHeight() / 2);
 			popX = (popX + 30) % 300;
 			popY = (popY + 30) % 300;
+			temp2.addLayout();
+			//temp2.setTargetCanvas(1);
 			
 			temp2.getGlassPane().setVisible(true);
 			add(paintFrameList.get(paintFrameList.indexOf(temp2)));

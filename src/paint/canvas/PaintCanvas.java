@@ -1,9 +1,11 @@
 package paint.canvas;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
@@ -11,7 +13,16 @@ import paint.canvas.resize.ResizePanel;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
 
-public class PaintCanvas extends JPanel {
+/**
+ * <b>캔버스</b><br>
+ * 
+ * <i>PaintFrame</i>에 들어감.<br>
+ * 그려진 각 도형 객체들이 올라갈 캔버스.
+ * 
+ * @author 병훈
+ */
+
+public class PaintCanvas extends JPanel implements Serializable {
 	private static final long serialVersionUID = 5102320731739599274L;
 	private final ResizePanel resizePanel;
 	private final PaintInfo drawInfo;
@@ -21,6 +32,7 @@ public class PaintCanvas extends JPanel {
 	private int prevHeight = 400;
 	
 	public PaintCanvas(PaintInfo drawInfo, ResizePanel resizePanel) {
+		this.setPreferredSize(new Dimension(prevWidth, prevHeight));
 		this.drawInfo = drawInfo;
 		this.setLayout(null);
 		this.setSize(prevWidth, prevHeight);
@@ -32,7 +44,12 @@ public class PaintCanvas extends JPanel {
 	}
 	
 	public Graphics2D getBufferGraphics() { return this.bufferGraphics; }
-	public ResizePanel getResizePanel() { return resizePanel; }
+	public ResizePanel getResizePanel() { return this.resizePanel; }
+	
+	@Override
+	public boolean isOptimizedDrawingEnabled() {
+		return false;
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
