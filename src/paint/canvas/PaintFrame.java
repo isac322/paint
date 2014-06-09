@@ -45,13 +45,13 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 				return false;
 			}
 		};
-		//overlay.setOpaque(false);
-		//overlay.setLayout(new OverlayLayout(overlay));
+		overlay.setOpaque(false);
+		overlay.setLayout(new OverlayLayout(overlay));
 		//overlay.setPreferredSize(new Dimension(width, height));
 		
 		//this.getContentPane().setLayout(null);
 		//this.add(overlay, BorderLayout.CENTER);
-		//this.setContentPane(overlay);
+		this.setContentPane(overlay);
 		
 		//this.getContentPane().setLayout(null);
 		
@@ -103,7 +103,7 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 	 */
 	public void setTargetCanvas(int index) { 
 		glass.setTargetCanvas(layout.get(index));
-		//this.getContentPane().setComponentZOrder(layout.get(index), 1);
+		this.getContentPane().setComponentZOrder(layout.get(index), 1);
 	}
 	
 	
@@ -117,6 +117,7 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		btn.setBounds(30, 30, 60, 60);
 		newCanvas.add(btn);
 		this.add(newCanvas);
+		newCanvas.setVisible(true);
 		//newCanvas.setSize(400, 400);
 	}
 	
