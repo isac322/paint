@@ -7,13 +7,14 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.JComponent;
 
 import paint.canvas.resize.ResizePanel;
 import paint.model.PaintInfo;
 
-public class ObjectiveShape extends JComponent {
+public class ObjectiveShape extends JComponent implements Serializable {
 	private static final long serialVersionUID = 7209900239540363764L;
 	private final PaintInfo drawInfo;
 	private final ResizePanel resizePanel;
@@ -34,46 +35,46 @@ public class ObjectiveShape extends JComponent {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.setColor(getDrawInfo().color);
+		g.setColor(drawInfo.color);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(getDrawInfo().stroke);
-		strokeWidth = (int)( getDrawInfo().stroke.getLineWidth() + 0.5 );
+		g2.setStroke(drawInfo.stroke);
+		strokeWidth = (int)( drawInfo.stroke.getLineWidth() + 0.5 );
 		
-		switch(getDrawInfo().type) {
+		switch(drawInfo.type) {
 		case Rect:
-			if (getDrawInfo().fill) {
-				if (getDrawInfo().color != getDrawInfo().innerColor) g.setColor(getDrawInfo().innerColor);
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
 				g.fillRect(strokeWidth, strokeWidth,
 						getWidth() - 2*strokeWidth,
 						getHeight() - 2*strokeWidth);
 			}
-			g.setColor(getDrawInfo().color);
+			g.setColor(drawInfo.color);
 			g.drawRect(strokeWidth, strokeWidth,
 					getWidth() - 2*strokeWidth,
 					getHeight() - 2*strokeWidth);
 			break;
 			
 		case Oval:
-			if (getDrawInfo().fill) {
-				if (getDrawInfo().color != getDrawInfo().innerColor) g.setColor(getDrawInfo().innerColor);
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
 				g.fillOval(strokeWidth, strokeWidth,
 						getWidth() - 2*strokeWidth,
 						getHeight() - 2*strokeWidth);
 			}
-			g.setColor(getDrawInfo().color);
+			g.setColor(drawInfo.color);
 			g.drawOval(strokeWidth, strokeWidth,
 					getWidth() - 2*strokeWidth,
 					getHeight() - 2*strokeWidth);
 			break;
 			
 		case RoundRect:
-			if (getDrawInfo().fill) {
-				if (getDrawInfo().color != getDrawInfo().innerColor) g.setColor(getDrawInfo().innerColor);
+			if (drawInfo.fill) {
+				if (drawInfo.color != drawInfo.innerColor) g.setColor(drawInfo.innerColor);
 				g.fillRoundRect(strokeWidth, strokeWidth,
 						getWidth() - 2*strokeWidth,
 						getHeight() - 2*strokeWidth, 50, 50);
 			}
-			g.setColor(getDrawInfo().color);
+			g.setColor(drawInfo.color);
 			g.drawRoundRect(strokeWidth, strokeWidth,
 					getWidth() - 2*strokeWidth,
 					getHeight() - 2*strokeWidth, 50, 50);
@@ -91,7 +92,6 @@ public class ObjectiveShape extends JComponent {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				resizePanel.setTarget(handle);
-				getParent().setComponentZOrder(resizePanel, 0);
 				resizePanel.setVisible(true);
 				resizePanel.setPreferredSize(new Dimension(getWidth(), getHeight()));
 				resizePanel.setLocation(handle.getLocation());
@@ -99,7 +99,7 @@ public class ObjectiveShape extends JComponent {
 				anchorPoint = e.getPoint();
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				
-				getParent().setComponentZOrder(handle, 1);
+				getParent().setComponentZOrder(handle, 0);
 			}
 			
 			@Override

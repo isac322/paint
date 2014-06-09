@@ -3,6 +3,7 @@ package paint.canvas;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -10,10 +11,15 @@ import javax.swing.JPanel;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
 
-public class GlassPanel extends JPanel implements MouseListener, MouseMotionListener {
+/**
+ * 마우스를 인식해서  drawInfo에 기록하고, 선택된 레이어에 선택된 그림을 그리도록 호출한다.
+ * @author 병훈
+ */
+
+public class GlassPanel extends JPanel implements MouseListener, MouseMotionListener, Serializable {
 	private static final long serialVersionUID = -3513705979529257202L;
 	private final ArrayList<PaintInfo> drawHistory;
-	private final PaintCanvas canvas;
+	private PaintCanvas canvas;
 	private final PaintInfo drawInfo;
 	
 	public GlassPanel(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, PaintCanvas canvas) {
@@ -24,6 +30,12 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
+	
+	/**
+	 * 그림 그릴 레이어 캔버스를 바꾼다.
+	 * @param canvas 그림 그릴 레이어 캔버스
+	 */
+	public void setTargetCanvas(PaintCanvas canvas) { this.canvas = canvas; }
 	
 	@Override
 	public void setVisible(boolean flag) {

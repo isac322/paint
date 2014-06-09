@@ -1,5 +1,7 @@
 package paint.model;
 
-public enum DrawType {
+import java.io.Serializable;
+
+public enum DrawType implements Serializable {
 	Line, Rect, Oval, Pen, RoundRect, String, Select
 }

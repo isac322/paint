@@ -3,8 +3,9 @@ package paint.model;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class PaintInfo {
+public class PaintInfo implements Serializable {
 	public Point start = new Point(-10, -10);
 	public Point end = new Point(-10, -10);
 	public DrawType type = DrawType.Pen;
@@ -14,7 +15,7 @@ public class PaintInfo {
 	public boolean draggState = false;
 	public boolean fill = false;
 	public int fontSize;
-	public BasicStroke stroke = new BasicStroke(1);
+	transient public BasicStroke stroke = new BasicStroke(1);
 	
 	public PaintInfo() {}
 	public PaintInfo(PaintInfo info) {
