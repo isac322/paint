@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 abstract public class ResizeButton extends JComponent implements MouseListener, MouseMotionListener {
-	private static final long serialVersionUID = -1735976506496086437L;
 	protected Cursor cursor = null;
 	protected Point anchorPoint = new Point(0, 0);
 	protected ObjectiveShape selectedShape;
@@ -68,7 +67,6 @@ abstract public class ResizeButton extends JComponent implements MouseListener, 
 }
 
 class ResizeSE extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeSE() {
 		cursor = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
@@ -87,7 +85,6 @@ class ResizeSE extends ResizeButton {
 }
 
 class ResizeE extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeE() {
 		cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
@@ -105,7 +102,6 @@ class ResizeE extends ResizeButton {
 }
 
 class ResizeS extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeS() {
 		cursor = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
@@ -123,7 +119,6 @@ class ResizeS extends ResizeButton {
 }
 
 class ResizeNW extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeNW() {
 		cursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
@@ -144,7 +139,6 @@ class ResizeNW extends ResizeButton {
 }
 
 class ResizeNE extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeNE() {
 		cursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
@@ -166,7 +160,6 @@ class ResizeNE extends ResizeButton {
 }
 
 class ResizeN extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeN() {
 		cursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
@@ -187,7 +180,6 @@ class ResizeN extends ResizeButton {
 }
 
 class ResizeSW extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeSW() {
 		cursor = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
@@ -209,7 +201,6 @@ class ResizeSW extends ResizeButton {
 }
 
 class ResizeW extends ResizeButton {
-	private static final long serialVersionUID = 6204304373474922104L;
 
 	public ResizeW() {
 		cursor = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class GlassPanel extends JPanel implements MouseListener, MouseMotionListener, Serializable {
-	private static final long serialVersionUID = -3513705979529257202L;
+
 	private final ArrayList<PaintInfo> drawHistory;
 	private final PaintInfo drawInfo;
 	private PaintCanvas canvas;

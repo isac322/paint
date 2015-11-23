@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import paint.canvas.ObjectiveShape;
 
 public class ResizePanel extends JComponent {
-	private static final long serialVersionUID = 7016269154585604118L;
 	private ResizeButton NW = new ResizeNW(), NE = new ResizeNE(), N = new ResizeN(),
 			SW = new ResizeSW(), SE = new ResizeSE(), S = new ResizeS(), W = new ResizeW(), E = new ResizeE();
 	private ObjectiveShape Shape;

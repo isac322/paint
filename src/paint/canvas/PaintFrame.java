@@ -16,7 +16,6 @@ import java.util.ArrayList;
  */
 
 public class PaintFrame extends JInternalFrame implements Serializable {
-	private static final long serialVersionUID = -8697445633303131846L;
 	private final ResizePanel resizePanel;
 	private final PaintCanvas canvas;
 	private final PaintInfo drawInfo;
@@ -30,7 +29,6 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		this.drawHistory = drawHistory;
 
 		overlay = new JPanel() {
-			private static final long serialVersionUID = 7755645820672734083L;
 
 			public boolean isOptimizedDrawingEnabled() {
 				return false;

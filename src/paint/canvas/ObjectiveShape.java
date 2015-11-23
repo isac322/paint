@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
 public class ObjectiveShape extends JComponent implements Serializable {
-	private static final long serialVersionUID = 7209900239540363764L;
 	private final PaintInfo drawInfo;
 	private final ResizePanel resizePanel;
 	private Point anchorPoint;

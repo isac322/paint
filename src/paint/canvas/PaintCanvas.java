@@ -19,7 +19,6 @@ import java.io.Serializable;
  */
 
 public class PaintCanvas extends JPanel implements Serializable {
-	private static final long serialVersionUID = 5102320731739599274L;
 	private final ResizePanel resizePanel;
 	private final PaintInfo drawInfo;
 	private BufferedImage bufferImage = null;
