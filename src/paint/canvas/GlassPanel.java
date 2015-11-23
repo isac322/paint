@@ -12,8 +12,8 @@ import paint.model.DrawType;
 import paint.model.PaintInfo;
 
 /**
- * ¸¶¿ì½º¸¦ ÀÎ½ÄÇØ¼­  drawInfo¿¡ ±â·ÏÇÏ°í, ¼±ÅÃµÈ ·¹ÀÌ¾î¿¡ ¼±ÅÃµÈ ±×¸²À» ±×¸®µµ·Ï È£ÃâÇÑ´Ù.
- * @author º´ÈÆ
+ * ë§ˆìš°ìŠ¤ë¥¼ ì¸ì‹í•´ì„œ  drawInfoì— ê¸°ë¡í•˜ê³ , ì„ íƒëœ ë ˆì´ì–´ì— ì„ íƒëœ ê·¸ë¦¼ì„ ê·¸ë¦¬ë„ë¡ í˜¸ì¶œí•œë‹¤.
+ * @author ë³‘í›ˆ
  */
 
 public class GlassPanel extends JPanel implements MouseListener, MouseMotionListener, Serializable {
@@ -33,8 +33,8 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	/**
-	 * ±×¸² ±×¸± ·¹ÀÌ¾î Äµ¹ö½º¸¦ ¹Ù²Û´Ù.
-	 * @param canvas ±×¸² ±×¸± ·¹ÀÌ¾î Äµ¹ö½º
+	 * ê·¸ë¦¼ ê·¸ë¦´ ë ˆì´ì–´ ìº”ë²„ìŠ¤ë¥¼ ë°”ê¾¼ë‹¤.
+	 * @param canvas ê·¸ë¦¼ ê·¸ë¦´ ë ˆì´ì–´ ìº”ë²„ìŠ¤
 	 */
 	public void setTargetCanvas(PaintCanvas canvas) { this.canvas = canvas; }
 	
@@ -58,15 +58,15 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 	public void mousePressed(MouseEvent e) {
 		drawInfo.clickState = true;
 		drawInfo.end = drawInfo.start = e.getPoint();
-		drawInfo.draggState = true;
+		drawInfo.dragState = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		System.out.println(canvas);
 		drawInfo.end = e.getPoint();
-		if (drawInfo.draggState) {
-			drawInfo.draggState = false;
+		if (drawInfo.dragState) {
+			drawInfo.dragState = false;
 			
 			if (drawInfo.type == DrawType.Pen || drawInfo.type == DrawType.Line) {
 				canvas.paintShape(canvas.getBufferGraphics());
@@ -100,7 +100,7 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 			drawInfo.start = drawInfo.end;
 		}
 		drawInfo.end = e.getPoint();
-		drawInfo.draggState = true;
+		drawInfo.dragState = true;
 		canvas.repaint();
 	}
 }

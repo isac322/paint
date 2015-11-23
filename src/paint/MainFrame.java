@@ -17,28 +17,42 @@ package paint;
 /* dead line: 2014.06.10 */
 /*************************/
 
-import java.awt.*;
-
-import javax.swing.*;
-
-import java.awt.event.*;
-import java.util.ArrayList;
-
-import paint.canvas.PaintCanvas;
 import paint.canvas.PaintFrame;
 import paint.model.DrawType;
 import paint.model.PaintInfo;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 /////////////////////
 /* class MainFrame */
 /////////////////////
-public class MainFrame extends JFrame
-{
+public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -8061752372147178965L;
+	/* instance variables */
+	private PaintInfo paintInfo = new PaintInfo();
+	private ArrayList<ArrayList<PaintInfo>> paintingHistoryManager = new ArrayList<ArrayList<PaintInfo>>();
+	private MenuBar menuBar = new MenuBar();
+	private ToolBasketPanel toolBasketPanel = new ToolBasketPanel();
+	private Desktop desktop = new Desktop();
+
+	/* constructor */
+	public MainFrame() {
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setSize(1280, 720);
+
+		setJMenuBar(menuBar);
+		getContentPane().add(BorderLayout.NORTH, toolBasketPanel);
+		getContentPane().add(BorderLayout.CENTER, desktop);
+	}
 
 	//main() method for test :D
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e) {
@@ -51,113 +65,82 @@ public class MainFrame extends JFrame
 			e.printStackTrace();
 		}
 		MainFrame mainFrame = new MainFrame();
-		
+
 		mainFrame.setVisible(true);
 	}
 
-	/* instance variables */
-	private PaintInfo						paintInfo				= new PaintInfo();
-	private ArrayList<ArrayList<PaintInfo>> paintingHistoryManager	= new ArrayList<ArrayList<PaintInfo>>();
-	
-	private MenuBar			menuBar			= new MenuBar();
-	private ToolBasketPanel	toolBasketPanel	= new ToolBasketPanel();
-	private Desktop			desktop			= new Desktop();
-	
-	/* constructor */
-	public MainFrame()
-	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1280, 720);
-	
-		setJMenuBar(menuBar);		
-		getContentPane().add(BorderLayout.NORTH, toolBasketPanel);
-		getContentPane().add(BorderLayout.CENTER, desktop);
-	}
-	
 	/* methods */
-	public JFrame getMainFrame()
-	{
+	public JFrame getMainFrame() {
 		return this;
 	}
-	
+
 	////////////////////////////////////////
 	/* inner class MenuBar from MainFrame */
 	////////////////////////////////////////
-	private class MenuBar extends JMenuBar
-	{
+	private class MenuBar extends JMenuBar {
 		private static final long serialVersionUID = -6907355447016973325L;
 		/* instance variables */
-		public JMenu	 file = new JMenu("File");
+		public JMenu file = new JMenu("File");
 		public JMenuItem save = new JMenuItem("Save");
 		public JMenuItem open = new JMenuItem("Open");
-		
-		public JMenu		color			= new JMenu("Color");
-		public JMenuItem	colorChooser	= new JMenuItem("Color Chooser");
-		
+
+		public JMenu color = new JMenu("Color");
+		public JMenuItem colorChooser = new JMenuItem("Color Chooser");
+
 		/* constructor */
-		public MenuBar()
-		{
+		public MenuBar() {
 			file.add(save);
 			file.add(open);
-			
+
 			color.add(colorChooser);
-			
+
 			MenuBarHandler01 menuBarHandler01 = new MenuBarHandler01();
 			MenuBarHandler02 menuBarHandler02 = new MenuBarHandler02();
-			
+
 			save.addActionListener(menuBarHandler01);
 			open.addActionListener(menuBarHandler01);
-			
+
 			colorChooser.addActionListener(menuBarHandler02);
-			
+
 			add(file);
 			add(color);
 		}
-		
-		private class MenuBarHandler01 implements ActionListener
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+
+		private class MenuBarHandler01 implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser jFileChooser = new JFileChooser();
-			
-				if(e.getSource() == save)
-				{
+
+				if (e.getSource() == save) {
 					jFileChooser.showSaveDialog(getMainFrame());
 				}
-				
-				if(e.getSource() == open)
-				{
+
+				if (e.getSource() == open) {
 					jFileChooser.showOpenDialog(getMainFrame());
 				}
 			}
 		}
-		
-		private class MenuBarHandler02 implements ActionListener
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+
+		private class MenuBarHandler02 implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
 				Color colorChoose = JColorChooser.showDialog(getMainFrame(), "Color Chooser", paintInfo.color);
-				
+
 				toolBasketPanel.toolPanel05.getCurrentFocusPanel().setBackground(colorChoose);
-				
-				if(toolBasketPanel.toolPanel05.getCurrentFocusPanel() == toolBasketPanel.toolPanel05.colorPanel01)
-				{
+
+				if (toolBasketPanel.toolPanel05.getCurrentFocusPanel() == toolBasketPanel.toolPanel05.colorPanel01) {
 					paintInfo.color = colorChoose;
 				}
-				
-				if(toolBasketPanel.toolPanel05.getCurrentFocusPanel() == toolBasketPanel.toolPanel05.colorPanel02)
-				{
+
+				if (toolBasketPanel.toolPanel05.getCurrentFocusPanel() == toolBasketPanel.toolPanel05.colorPanel02) {
 					paintInfo.innerColor = colorChoose;
 				}
 			}
 		}
 	}
-	
+
 	/////////////////////////////////////////////////
 	/* inner class ToolBaseketPanel from MainFrame */
 	/////////////////////////////////////////////////
-	private class ToolBasketPanel extends JPanel
-	{
+	private class ToolBasketPanel extends JPanel {
 		private static final long serialVersionUID = 7822254494211034905L;
 		/* instance variables */
 		public ToolPanel01 toolPanel01 = new ToolPanel01();
@@ -166,14 +149,13 @@ public class MainFrame extends JFrame
 		public ToolPanel04 toolPanel04 = new ToolPanel04();
 		public ToolPanel05 toolPanel05 = new ToolPanel05();
 		public ToolPanel06 toolPanel06 = new ToolPanel06();
-		
+
 		/* constructor */
-		public ToolBasketPanel()
-		{
+		public ToolBasketPanel() {
 			setLayout(new GridLayout(1, 6));
-			
+
 			setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-			
+
 			add(toolPanel01);
 			add(toolPanel02);
 			add(toolPanel03);
@@ -181,76 +163,67 @@ public class MainFrame extends JFrame
 			add(toolPanel05);
 			add(toolPanel06);
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel01 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel01 extends JPanel
-		{
+		private class ToolPanel01 extends JPanel {
 			private static final long serialVersionUID = 3006433209919308008L;
 			/* instance variables */
-			public JButton newPaintFrame       = new JButton("New Paint Frame");
+			public JButton newPaintFrame = new JButton("New Paint Frame");
 			public JButton deleteAllPaintFrame = new JButton("Delete All Paint Frame");
-			
+
 			/* constructor */
-			public ToolPanel01()
-			{
+			public ToolPanel01() {
 				setLayout(new GridLayout(1, 2));
-				
+
 				ToolPanel01Handler01 toolPanel01Handler01 = new ToolPanel01Handler01();
-				
+
 				newPaintFrame.addActionListener(toolPanel01Handler01);
 				add(newPaintFrame);
-				
+
 				deleteAllPaintFrame.addActionListener(toolPanel01Handler01);
 				add(deleteAllPaintFrame);
 			}
-			
-			private class ToolPanel01Handler01 implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					if(e.getSource() == newPaintFrame)
-					{
+
+			private class ToolPanel01Handler01 implements ActionListener {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == newPaintFrame) {
 						desktop.addPaintFrame();
 					}
-					
-					if(e.getSource() == deleteAllPaintFrame)
-					{
+
+					if (e.getSource() == deleteAllPaintFrame) {
 						desktop.deleteAllPaintFrame();
 					}
 				}
 			}
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel02 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel02 extends JPanel
-		{
+		private class ToolPanel02 extends JPanel {
 			private static final long serialVersionUID = -8045151139249778020L;
 			/* instance variables */
 			public JComboBox<String> penSizeSelectBox;
-			public String[]  penSizeList;
-			
-			public JButton   pen    = new JButton("Pen");
-			public JButton   select = new JButton("Select");
-			public JButton   fill   = new JButton("Fill");
-			
+			public String[] penSizeList;
+
+			public JButton pen = new JButton("Pen");
+			public JButton select = new JButton("Select");
+			public JButton fill = new JButton("Fill");
+
 			/* constructor */
-			public ToolPanel02()
-			{
+			public ToolPanel02() {
 				penSizeList = new String[16];
-				for(int i = 0; i < penSizeList.length; i++)
-				{
-					penSizeList[i] = new String(String.format("%d", i + 1));
+				for (int i = 0; i < penSizeList.length; i++) {
+					penSizeList[i] = String.format("%d", i + 1);
 				}
-				
-				penSizeSelectBox = new JComboBox<String>(penSizeList);
-				
+
+				penSizeSelectBox = new JComboBox<>(penSizeList);
+
 				penSizeSelectBox.addActionListener(new ToolPanel02Handler01());
 				add(penSizeSelectBox);
-				
+
 				pen.addActionListener(new ToolPanel02Handler02());
 				add(pen);
 				select.addActionListener(new ToolPanel02Handler03());
@@ -259,19 +232,15 @@ public class MainFrame extends JFrame
 				fill.setBorder(BorderFactory.createRaisedBevelBorder());
 				add(fill);
 			}
-			
-			private class ToolPanel02Handler01 implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					paintInfo.stroke = new BasicStroke(Integer.parseInt((String)penSizeSelectBox.getSelectedItem()));
+
+			private class ToolPanel02Handler01 implements ActionListener {
+				public void actionPerformed(ActionEvent e) {
+					paintInfo.stroke = new BasicStroke(Integer.parseInt((String) penSizeSelectBox.getSelectedItem()));
 				}
 			}
-			
-			private class ToolPanel02Handler02 implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
+
+			private class ToolPanel02Handler02 implements ActionListener {
+				public void actionPerformed(ActionEvent e) {
 					paintInfo.type = DrawType.Pen;
 					JInternalFrame[] frms = desktop.getAllFrames();
 					for (JInternalFrame f : frms) {
@@ -280,11 +249,9 @@ public class MainFrame extends JFrame
 					}
 				}
 			}
-			
-			private class ToolPanel02Handler03 implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
+
+			private class ToolPanel02Handler03 implements ActionListener {
+				public void actionPerformed(ActionEvent e) {
 					paintInfo.type = DrawType.Select;
 					JInternalFrame[] frms = desktop.getAllFrames();
 					for (JInternalFrame f : frms) {
@@ -292,84 +259,71 @@ public class MainFrame extends JFrame
 					}
 				}
 			}
-			
-			private class ToolPanel02Handler04 implements ActionListener
-			{
+
+			private class ToolPanel02Handler04 implements ActionListener {
 				int i = 0;
-			
-				public void actionPerformed(ActionEvent e)
-				{
-					if(i % 2 == 0)
-					{
+
+				public void actionPerformed(ActionEvent e) {
+					if (i % 2 == 0) {
 						paintInfo.fill = true;
 						fill.setBorder(BorderFactory.createLoweredBevelBorder());
-					}
-					else
-					{
+					} else {
 						paintInfo.fill = false;
 						fill.setBorder(BorderFactory.createRaisedBevelBorder());
 					}
-					
+
 					i++;
 				}
 			}
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel03 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel03 extends JPanel
-		{
+		private class ToolPanel03 extends JPanel {
 			private static final long serialVersionUID = -1681703710675211529L;
 			/* instance variables */
-			public JButton line      = new JButton("Line");
-			public JButton rect      = new JButton("Rect");
-			public JButton oval      = new JButton("Oval");
+			public JButton line = new JButton("Line");
+			public JButton rect = new JButton("Rect");
+			public JButton oval = new JButton("Oval");
 			public JButton roundRect = new JButton("Round Rect");
 
 			/* constructor */
-			public ToolPanel03()
-			{
+			public ToolPanel03() {
 				setLayout(new GridLayout(1, 4));
-			
+
 				ToolPanel03Handler01 toolPanel03Handler01 = new ToolPanel03Handler01();
-				
+
 				line.addActionListener(toolPanel03Handler01);
 				add(line);
-				
+
 				rect.addActionListener(toolPanel03Handler01);
 				add(rect);
-				
+
 				oval.addActionListener(toolPanel03Handler01);
 				add(oval);
-				
+
 				roundRect.addActionListener(toolPanel03Handler01);
 				add(roundRect);
 			}
-			
-			private class ToolPanel03Handler01 implements ActionListener
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					if(e.getSource() == line)
-					{
+
+			private class ToolPanel03Handler01 implements ActionListener {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getSource() == line) {
 						paintInfo.type = DrawType.Line;
 					}
-					
-					if(e.getSource() == rect)
-					{
+
+					if (e.getSource() == rect) {
 						paintInfo.type = DrawType.Rect;
 						((PaintFrame) desktop.getSelectedFrame()).setTargetCanvas(1);
 					}
-					
-					if(e.getSource() == oval)
-					{
+
+					if (e.getSource() == oval) {
 						paintInfo.type = DrawType.Oval;
 						((PaintFrame) desktop.getSelectedFrame()).setTargetCanvas(0);
 					}
-					
-					if(e.getSource() == roundRect)
-					{
+
+					if (e.getSource() == roundRect) {
 						paintInfo.type = DrawType.RoundRect;
 					}
 
@@ -381,26 +335,24 @@ public class MainFrame extends JFrame
 				}
 			}
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel04 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel04 extends JPanel
-		{
+		private class ToolPanel04 extends JPanel {
 			private static final long serialVersionUID = -456947901695937121L;
 
 			/* instance variables */
-			public JButton      string = new JButton("String");
-			
-			public JComboBox<JTextField>	fontSelectBox;
-			public JTextField[]				fontList;
-			
-			public JComboBox<String>	fontSizeSelectBox;
-			public String[]				fontSizeList;
-			
+			public JButton string = new JButton("String");
+
+			public JComboBox<JTextField> fontSelectBox;
+			public JTextField[] fontList;
+
+			public JComboBox<String> fontSizeSelectBox;
+			public String[] fontSizeList;
+
 			/* constructor */
-			public ToolPanel04()
-			{
+			public ToolPanel04() {
 				fontList = new JTextField[3];
 				fontList[0] = new JTextField("Plain");
 				fontList[1] = new JTextField("Bold");
@@ -408,108 +360,97 @@ public class MainFrame extends JFrame
 				fontList[0].setFont(new Font(Font.SERIF, Font.PLAIN, 8));
 				fontList[1].setFont(new Font(Font.SERIF, Font.BOLD, 8));
 				fontList[2].setFont(new Font(Font.SERIF, Font.ITALIC, 8));
-				fontSelectBox = new JComboBox<JTextField>(fontList);
-				
+				fontSelectBox = new JComboBox<>(fontList);
+
 				fontSizeList = new String[16];
-				for(int i = 0; i < fontSizeList.length; i++)
-				{
-					fontSizeList[i] = new String(String.format("%d", i + 8));
+				for (int i = 0; i < fontSizeList.length; i++) {
+					fontSizeList[i] = String.format("%d", i + 8);
 				}
-				fontSizeSelectBox = new JComboBox<String>(fontSizeList);
-			
+				fontSizeSelectBox = new JComboBox<>(fontSizeList);
+
 				add(string);
 				add(fontSelectBox);
 				add(fontSizeSelectBox);
 			}
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel05 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel05 extends JPanel
-		{
+		private class ToolPanel05 extends JPanel {
 			private static final long serialVersionUID = -5647035712793291383L;
 			/* instance variables */
 			public JPanel colorPanel01 = new JPanel();
 			public JPanel colorPanel02 = new JPanel();
-			
+
 			private JPanel currentFocusPanel;
 
 			/* constructor */
-			public ToolPanel05()
-			{
+			public ToolPanel05() {
 				setLayout(new GridLayout(1, 2));
-				
+
 				colorPanel01.setBackground(Color.BLACK);
 				colorPanel02.setBackground(Color.WHITE);
 				colorPanel01.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
 				colorPanel02.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				
+
 				setCurrentFocusPanel(colorPanel01);
-				
+
 				ToolPanel05Handler01 toolPanel05Handler01 = new ToolPanel05Handler01();
-				
+
 				colorPanel01.addMouseListener(toolPanel05Handler01);
 				colorPanel02.addMouseListener(toolPanel05Handler01);
-				
+
 				add(colorPanel01);
 				add(colorPanel02);
 			}
-			
-			/* methods */
-			public void setCurrentFocusPanel(JPanel currentFocusPanel)
-			{
-				this.currentFocusPanel = currentFocusPanel;
-			}
-			public JPanel getCurrentFocusPanel()
-			{
+
+			public JPanel getCurrentFocusPanel() {
 				return currentFocusPanel;
 			}
-			
-			private class ToolPanel05Handler01 extends MouseAdapter
-			{
-				public void mousePressed(MouseEvent e)
-				{
-					if(e.getSource() == colorPanel01)
-					{
+
+			/* methods */
+			public void setCurrentFocusPanel(JPanel currentFocusPanel) {
+				this.currentFocusPanel = currentFocusPanel;
+			}
+
+			private class ToolPanel05Handler01 extends MouseAdapter {
+				public void mousePressed(MouseEvent e) {
+					if (e.getSource() == colorPanel01) {
 						setCurrentFocusPanel(colorPanel01);
-						
+
 						colorPanel01.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
 						colorPanel02.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 					}
-					
-					if(e.getSource() == colorPanel02)
-					{
+
+					if (e.getSource() == colorPanel02) {
 						setCurrentFocusPanel(colorPanel02);
-						
+
 						colorPanel02.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
 						colorPanel01.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 					}
 				}
 			}
 		}
-		
+
 		/////////////////////////////////////////////////
 		/* inner class ToolPanel06 from ToolBasketPanel*/
 		/////////////////////////////////////////////////
-		private class ToolPanel06 extends JPanel
-		{
+		private class ToolPanel06 extends JPanel {
 			private static final long serialVersionUID = -6044480464697216248L;
 			/* instance variables */
-			public Color[]  basicColors = {Color.WHITE, Color.WHITE, Color.BLACK, Color.DARK_GRAY, Color.GRAY, Color.LIGHT_GRAY, Color.RED, Color.ORANGE, Color.PINK, Color.YELLOW, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA};
+			public Color[] basicColors = {Color.WHITE, Color.WHITE, Color.BLACK, Color.DARK_GRAY, Color.GRAY, Color.LIGHT_GRAY, Color.RED, Color.ORANGE, Color.PINK, Color.YELLOW, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA};
 			public JPanel[] basicColorPanels;
-			
+
 			/* constructor */
-			public ToolPanel06()
-			{
+			public ToolPanel06() {
 				setLayout(new GridLayout(2, 7));
-				
+
 				basicColorPanels = new JPanel[basicColors.length];
-			
+
 				ToolPanel06Handler01 toolPanel06Handler01 = new ToolPanel06Handler01();
-			
-				for(int i = 0; i < basicColorPanels.length; i++)
-				{
+
+				for (int i = 0; i < basicColorPanels.length; i++) {
 					basicColorPanels[i] = new JPanel();
 					basicColorPanels[i].setBorder(BorderFactory.createLoweredBevelBorder());
 					basicColorPanels[i].setBackground(basicColors[i]);
@@ -517,24 +458,18 @@ public class MainFrame extends JFrame
 					add(basicColorPanels[i]);
 				}
 			}
-			
-			private class ToolPanel06Handler01 extends MouseAdapter
-			{
-				public void mousePressed(MouseEvent e)
-				{
-					for(int i = 0; i < basicColorPanels.length; i++)
-					{
-						if(e.getSource() == basicColorPanels[i])
-						{
+
+			private class ToolPanel06Handler01 extends MouseAdapter {
+				public void mousePressed(MouseEvent e) {
+					for (int i = 0; i < basicColorPanels.length; i++) {
+						if (e.getSource() == basicColorPanels[i]) {
 							toolPanel05.getCurrentFocusPanel().setBackground(basicColors[i]);
-							
-							if(toolPanel05.getCurrentFocusPanel() == toolPanel05.colorPanel01)
-							{
+
+							if (toolPanel05.getCurrentFocusPanel() == toolPanel05.colorPanel01) {
 								paintInfo.color = basicColors[i];
 							}
-							
-							if(toolPanel05.getCurrentFocusPanel() == toolPanel05.colorPanel02)
-							{
+
+							if (toolPanel05.getCurrentFocusPanel() == toolPanel05.colorPanel02) {
 								paintInfo.innerColor = basicColors[i];
 							}
 						}
@@ -543,56 +478,51 @@ public class MainFrame extends JFrame
 			}
 		}
 	}
-	
+
 	////////////////////////////////////////
 	/* inner class Desktop from MainFrame */
 	////////////////////////////////////////
-	private class Desktop extends JDesktopPane
-	{
+	private class Desktop extends JDesktopPane {
 		private static final long serialVersionUID = -3997872200322951523L;
 
 		/* instance variables */
-		public ArrayList<PaintFrame> paintFrameList = new ArrayList<PaintFrame>();
-		
+		public ArrayList<PaintFrame> paintFrameList = new ArrayList<>();
+
 		private int popX;
 		private int popY;
-		
+
 		/* constructor */
-		public Desktop()
-		{
+		public Desktop() {
 			setBackground(Color.LIGHT_GRAY);
 		}
-		
+
 		/* methods */
-		public void addPaintFrame()
-		{
-			ArrayList<PaintInfo> temp = new ArrayList<PaintInfo>();
+		public void addPaintFrame() {
+			ArrayList<PaintInfo> temp = new ArrayList<>();
 			paintingHistoryManager.add(temp);
 
 			PaintFrame temp2 = new PaintFrame(temp, paintInfo, getMainFrame().getWidth() / 2, getMainFrame().getHeight() / 2);
 			paintFrameList.add(temp2);
-			
+
 			temp2.setBounds(popX, popY, getMainFrame().getWidth() / 2, getMainFrame().getHeight() / 2);
 			popX = (popX + 30) % 300;
 			popY = (popY + 30) % 300;
 			temp2.addLayout();
 			//temp2.setTargetCanvas(1);
-			
+
 			temp2.getGlassPane().setVisible(true);
 			add(paintFrameList.get(paintFrameList.indexOf(temp2)));
 		}
-		
-		public void deleteAllPaintFrame()
-		{
+
+		public void deleteAllPaintFrame() {
 			JInternalFrame[] targets = getAllFrames();
-						
-			for(JInternalFrame target : targets)
-			{
+
+			for (JInternalFrame target : targets) {
 				target.dispose();
 			}
-						
+
 			paintingHistoryManager.clear();
-			
+
 			popX = 0;
 			popY = 0;
 		}

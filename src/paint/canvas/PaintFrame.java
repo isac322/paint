@@ -1,25 +1,18 @@
 package paint.canvas;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import paint.canvas.resize.ResizePanel;
+import paint.model.PaintInfo;
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.OverlayLayout;
-
-import paint.canvas.resize.ResizePanel;
-import paint.model.PaintInfo;
-
 /**
- * <i>JDesktopPane</i>¿¡ µé¾î°¥ ÇÏ³ªÀÇ Ã¢
- * @author º´ÈÆ
+ * <i>JDesktopPane</i>ì— ë“¤ì–´ê°ˆ í•˜ë‚˜ì˜ ì°½
+ *
+ * @author ë³‘í›ˆ
  */
 
 public class PaintFrame extends JInternalFrame implements Serializable {
@@ -31,13 +24,11 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 	private final JPanel overlay;
 	private final ArrayList<PaintInfo> drawHistory;
 	private final ArrayList<PaintCanvas> layout = new ArrayList<PaintCanvas>();
-	
-	JLayeredPane layer;
-	
+
 	public PaintFrame(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, int width, int height) {
 		super("New Image", true, true, true, true);
 		this.drawHistory = drawHistory;
-		
+
 		overlay = new JPanel() {
 			private static final long serialVersionUID = 7755645820672734083L;
 
@@ -48,21 +39,21 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		overlay.setOpaque(false);
 		overlay.setLayout(new OverlayLayout(overlay));
 		//overlay.setPreferredSize(new Dimension(width, height));
-		
+
 		//this.getContentPane().setLayout(null);
 		//this.add(overlay, BorderLayout.CENTER);
 		this.setContentPane(overlay);
-		
+
 		//this.getContentPane().setLayout(null);
-		
+
 		//layer = this.getLayeredPane();
 		//layer.setOpaque(false);
-		
+
 		this.drawInfo = drawInfo;
 		resizePanel = new ResizePanel();
 		canvas = new PaintCanvas(drawInfo, resizePanel);
 		glass = new GlassPanel(drawHistory, drawInfo, canvas);
-		
+
 		resizePanel.setVisible(false);
 		this.addMouseListener(new MouseAdapter() {
 			@Override
@@ -72,7 +63,7 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 				}
 			}
 		});
-		
+
 		layout.add(canvas);
 		this.add(canvas);
 		canvas.setSize(width, height);
@@ -83,32 +74,38 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		this.setVisible(true);
 		this.getContentPane().setComponentZOrder(resizePanel, 0);
 	}
-	
+
 	/**
-	 * resize panelÀ» »ç¶óÁö°ÔÇÑ´Ù.
+	 * resize panelì„ ì‚¬ë¼ì§€ê²Œí•œë‹¤.
 	 */
-	public void disableResizePane() { resizePanel.setVisible(false); }
-	
-	
+	public void disableResizePane() {
+		resizePanel.setVisible(false);
+	}
+
+
 	/**
-	 * ÇÁ·¹ÀÓ¿¡ ÀúÀåµÈ ·¹ÀÌ¾î Äµ¹ö½º ¸®½ºÆ®¸¦ ¹İÈ¯ÇÑ´Ù.
-	 * @return ÇÁ·¹ÀÓ¿¡ ÀúÀåµÈ ·¹ÀÌ¾î Äµ¹ö½º ¸®½ºÆ®
+	 * í”„ë ˆì„ì— ì €ì¥ëœ ë ˆì´ì–´ ìº”ë²„ìŠ¤ ë¦¬ìŠ¤íŠ¸ë¥¼ ë°˜í™˜í•œë‹¤.
+	 *
+	 * @return í”„ë ˆì„ì— ì €ì¥ëœ ë ˆì´ì–´ ìº”ë²„ìŠ¤ ë¦¬ìŠ¤íŠ¸
 	 */
-	public ArrayList<PaintCanvas> getLayoutList() { return layout; }
-	
-	
+	public ArrayList<PaintCanvas> getLayoutList() {
+		return layout;
+	}
+
+
 	/**
-	 * ±×¸² ±×¸± Äµ¹ö½º¸¦ ·¹ÀÌ¾î ¸®½ºÆ®¿¡¼­ <i>index</i>¿¡ ÇØ´çÇÏ´Â Äµ¹ö½º·Î ¹Ù²Û´Ù.
-	 * @param index ·¹ÀÌ¾î ¸®½ºÆ®¿¡¼­ÀÇ ÀÎµ¦½º
+	 * ê·¸ë¦¼ ê·¸ë¦´ ìº”ë²„ìŠ¤ë¥¼ ë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ì—ì„œ <i>index</i>ì— í•´ë‹¹í•˜ëŠ” ìº”ë²„ìŠ¤ë¡œ ë°”ê¾¼ë‹¤.
+	 *
+	 * @param index ë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ì—ì„œì˜ ì¸ë±ìŠ¤
 	 */
-	public void setTargetCanvas(int index) { 
+	public void setTargetCanvas(int index) {
 		glass.setTargetCanvas(layout.get(index));
 		this.getContentPane().setComponentZOrder(layout.get(index), 1);
 	}
-	
-	
+
+
 	/**
-	 * Áö±İ ÇÁ·¹ÀÓ¿¡ ·¹ÀÌ¾î Äµ¹ö½º¸¦ Ãß°¡ÇÑ´Ù.
+	 * ì§€ê¸ˆ í”„ë ˆì„ì— ë ˆì´ì–´ ìº”ë²„ìŠ¤ë¥¼ ì¶”ê°€í•œë‹¤.
 	 */
 	public void addLayout() {
 		PaintCanvas newCanvas = new PaintCanvas(drawInfo, resizePanel);
@@ -120,13 +117,13 @@ public class PaintFrame extends JInternalFrame implements Serializable {
 		newCanvas.setVisible(true);
 		//newCanvas.setSize(400, 400);
 	}
-	
+
 	public void repaintAll() {
-		for (int i = 0; i < this.drawHistory.size(); i++) {
-			ObjectiveShape Shape = new ObjectiveShape(drawHistory.get(i), resizePanel);
-			
-			Shape.setLocation(drawHistory.get(i).start.x - (int)(drawHistory.get(i).stroke.getLineWidth() + 0.5),
-					drawHistory.get(i).start.y - (int)(drawHistory.get(i).stroke.getLineWidth() + 0.5));
+		for (PaintInfo aDrawHistory : this.drawHistory) {
+			ObjectiveShape Shape = new ObjectiveShape(aDrawHistory, resizePanel);
+
+			Shape.setLocation(aDrawHistory.start.x - (int) (aDrawHistory.stroke.getLineWidth() + 0.5),
+					aDrawHistory.start.y - (int) (aDrawHistory.stroke.getLineWidth() + 0.5));
 			canvas.add(Shape);
 			canvas.setComponentZOrder(Shape, 0);
 		}

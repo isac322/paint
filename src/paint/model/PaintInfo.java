@@ -12,7 +12,7 @@ public class PaintInfo implements Serializable {
 	public Color color = Color.BLACK;
 	public Color innerColor = Color.WHITE;
 	public boolean clickState = false;
-	public boolean draggState = false;
+	public boolean dragState = false;
 	public boolean fill = false;
 	public int fontSize;
 	transient public BasicStroke stroke = new BasicStroke(1);
@@ -24,7 +24,7 @@ public class PaintInfo implements Serializable {
 		this.type = info.type;
 		this.color = info.color;
 		this.innerColor = info.innerColor;
-		this.draggState = info.draggState;
+		this.dragState = info.dragState;
 		this.fill = info.fill;
 		this.fontSize = info.fontSize;
 		this.stroke = info.stroke;

@@ -1,7 +1,6 @@
 package paint.canvas;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -14,12 +13,12 @@ import paint.model.DrawType;
 import paint.model.PaintInfo;
 
 /**
- * <b>Äµ¹ö½º</b><br>
+ * <b>ìº”ë²„ìŠ¤</b><br>
  * 
- * <i>PaintFrame</i>¿¡ µé¾î°¨.<br>
- * ±×·ÁÁø °¢ µµÇü °´Ã¼µéÀÌ ¿Ã¶ó°¥ Äµ¹ö½º.
+ * <i>PaintFrame</i>ì— ë“¤ì–´ê°.<br>
+ * ê·¸ë ¤ì§„ ê° ë„í˜• ê°ì²´ë“¤ì´ ì˜¬ë¼ê°ˆ ìº”ë²„ìŠ¤.
  * 
- * @author º´ÈÆ
+ * @author ë³‘í›ˆ
  */
 
 public class PaintCanvas extends JPanel implements Serializable {
@@ -73,7 +72,7 @@ public class PaintCanvas extends JPanel implements Serializable {
 		g2.drawImage(bufferImage, null, 0, 0);
 		if (drawInfo.clickState) {
 			if (drawInfo.type == DrawType.Pen) paintShape(bufferGraphics);
-			else if (drawInfo.draggState) paintShape(g);
+			else if (drawInfo.dragState) paintShape(g);
 		}
 	}
 	
