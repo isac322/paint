@@ -1,8 +1,6 @@
 package paint.model;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Point;
+import java.awt.*;
 import java.io.Serializable;
 
 public class PaintInfo implements Serializable {
@@ -16,8 +14,10 @@ public class PaintInfo implements Serializable {
 	public boolean fill = false;
 	public int fontSize;
 	transient public BasicStroke stroke = new BasicStroke(1);
-	
-	public PaintInfo() {}
+
+	public PaintInfo() {
+	}
+
 	public PaintInfo(PaintInfo info) {
 		this.start = info.start;
 		this.end = info.end;

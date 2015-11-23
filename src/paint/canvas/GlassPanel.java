@@ -1,27 +1,27 @@
 package paint.canvas;
 
+import paint.model.DrawType;
+import paint.model.PaintInfo;
+
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
-import paint.model.DrawType;
-import paint.model.PaintInfo;
-
 /**
  * 마우스를 인식해서  drawInfo에 기록하고, 선택된 레이어에 선택된 그림을 그리도록 호출한다.
+ *
  * @author 병훈
  */
 
 public class GlassPanel extends JPanel implements MouseListener, MouseMotionListener, Serializable {
 	private static final long serialVersionUID = -3513705979529257202L;
 	private final ArrayList<PaintInfo> drawHistory;
-	private PaintCanvas canvas;
 	private final PaintInfo drawInfo;
-	
+	private PaintCanvas canvas;
+
 	public GlassPanel(ArrayList<PaintInfo> drawHistory, PaintInfo drawInfo, PaintCanvas canvas) {
 		super();
 		this.setOpaque(false);
@@ -31,29 +31,39 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
-	
+
 	/**
 	 * 그림 그릴 레이어 캔버스를 바꾼다.
+	 *
 	 * @param canvas 그림 그릴 레이어 캔버스
 	 */
-	public void setTargetCanvas(PaintCanvas canvas) { this.canvas = canvas; }
-	
+	public void setTargetCanvas(PaintCanvas canvas) {
+		this.canvas = canvas;
+	}
+
 	@Override
 	public void setVisible(boolean flag) {
 		super.setVisible(flag);
-		
+
 		if (flag) this.getParent().setComponentZOrder(this, 0);
 	}
-	
+
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseMoved(MouseEvent e) {}
-	
+	public void mouseMoved(MouseEvent e) {
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		drawInfo.clickState = true;
@@ -63,11 +73,10 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		System.out.println(canvas);
 		drawInfo.end = e.getPoint();
 		if (drawInfo.dragState) {
 			drawInfo.dragState = false;
-			
+
 			if (drawInfo.type == DrawType.Pen || drawInfo.type == DrawType.Line) {
 				canvas.paintShape(canvas.getBufferGraphics());
 			} else {
@@ -84,9 +93,9 @@ public class GlassPanel extends JPanel implements MouseListener, MouseMotionList
 				PaintInfo tmp = new PaintInfo(drawInfo);
 				drawHistory.add(tmp);
 				ObjectiveShape Shape = new ObjectiveShape(tmp, canvas.getResizePanel());
-				
-				Shape.setLocation(drawInfo.start.x - (int)(drawInfo.stroke.getLineWidth() + 0.5),
-						drawInfo.start.y - (int)(drawInfo.stroke.getLineWidth() + 0.5));
+
+				Shape.setLocation(drawInfo.start.x - (int) (drawInfo.stroke.getLineWidth() + 0.5),
+						drawInfo.start.y - (int) (drawInfo.stroke.getLineWidth() + 0.5));
 				canvas.add(Shape);
 				canvas.setComponentZOrder(Shape, 0);
 			}
